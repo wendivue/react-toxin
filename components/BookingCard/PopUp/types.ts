@@ -1,6 +1,7 @@
-import type { AdditionalServices } from 'storeMobX/booking/bookingTypes';
-import { RoomGuestsFirebase } from 'storeMobX/rooms/roomsTypes';
-import { Timestamp } from '@/libs/Firebase/types';
+import { AdditionalServices } from 'store/booking/bookingTypes';
+import { RoomGuestsFirebase } from 'store/rooms/roomsTypes';
+
+import { Timestamp } from '@/libs/Firebase/Firebase';
 
 type PopUpProps = {
   pricePerDay: number;

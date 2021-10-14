@@ -1,4 +1,4 @@
-import { RoomsFilter } from 'storeMobX/rooms/roomsTypes';
+import { RoomsFilter } from 'store/rooms/roomsTypes';
 
 export type GetDatesType = {
   dateFrom: number | null;
@@ -6,7 +6,7 @@ export type GetDatesType = {
 };
 
 const getDates = (filterFromState: RoomsFilter | null): GetDatesType => {
-  if (!filterFromState || !filterFromState.dates) {
+  if (filterFromState === null || !filterFromState.dates) {
     return {
       dateFrom: null,
       dateTo: null,

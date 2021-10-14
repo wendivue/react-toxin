@@ -1,19 +1,21 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import firebase from 'firebase/app';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
+import { useRouter } from 'next/router';
 
 import { dateToJSON } from 'helpers/timestampJSONFormatter';
+import { RoomsFilter } from 'store/rooms/roomsTypes';
 import { isDatesMatch } from 'store/rooms/utilities/filterRooms/isDatesMatch';
+import { bookingAdd } from 'store/booking/bookingActions';
+import { roomBookingFetch } from 'store/room/roomAction';
 import {
   countDayForSale,
   millisecondsInDay,
   percentageDiscount,
   priceSetLinen,
 } from 'const/costCard';
-import { useDropdown } from '@/libs/hooks/useDropdown';
-import { useStore } from '@/libs/hooks/useStore';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
 import { RenderChild } from '@/DropDown/types';
 import { DropDown } from '@/DropDown';
 import { DropdownDate } from '@/DropdownDate';
@@ -21,33 +23,31 @@ import { Button } from '@/Button';
 import { WarningPopup } from '@/WarningPopup';
 import { SubmitPopup } from '@/SubmitPopup';
 import { LoadingPopup } from '@/LoadingPopup';
+import { useDropdown } from '@/libs/hooks/useDropdown';
 
 import styles from './CostCard.module.scss';
 import { CostCardProps } from './types';
 
 const { Timestamp } = firebase.firestore;
 
-const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
+const CostCard: FC<CostCardProps> = ({ roomId }) => {
   const { t } = useTranslation(['booking', 'filter']);
+  const router = useRouter();
+
+  const userAuth = useTypedSelector((state) => {
+    return state.auth.user;
+  });
+  const { bookingsAddedWithSuccess, bookingsError: isBookingAddError } =
+    useTypedSelector((state) => {
+      return state.booking;
+    });
 
   const {
-    authStore: { user },
-    bookingStore: { addBooking, bookingError, bookingAddedWithSuccess },
-  } = useStore();
-  const {
-    roomStore: {
-      room: roomInfo,
-      isLoadingRoomData: roomLoading,
-      bookings,
-      fetchRoomBooking,
-    },
-  } = useStore();
-
-  const initialGuestsItems = {
-    adults: { value: 0 },
-    kids: { value: 0 },
-    babies: { value: 0 },
-  };
+    room,
+    isLoadedRoomData: roomLoading,
+    bookings,
+  } = useTypedSelector((state) => state.room);
+  const roomInfo = useMemo(() => room, []);
 
   const {
     price: pricePerDay = Infinity,
@@ -57,10 +57,7 @@ const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
 
   const roomTypes = { standard: '', deluxe: t('deluxe'), lux: t('lux') };
 
-  const [guestsDropdownInfo, setGuestsDropdownItems] = useDropdown(
-    'guests',
-    initialGuestsItems,
-  );
+  const [guestsDropdownInfo, setGuestsDropdownItems] = useDropdown('guests');
 
   const [dateFrom, setDateFrom] = useState<number | null>(null);
   const [dateTo, setDateTo] = useState<number | null>(null);
@@ -75,7 +72,7 @@ const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
   const [isDatesFree, setIsDatesFree] = useState(true);
   const isValid = useMemo(() => {
     return (
-      user &&
+      userAuth &&
       dateTo &&
       dateFrom &&
       guestsDropdownInfo.items.adults.value > 0 &&
@@ -86,7 +83,7 @@ const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
     dateTo,
     guestsDropdownInfo.items.adults.value,
     isDatesFree,
-    user,
+    userAuth,
   ]);
   const dispatch = useDispatch();
 
@@ -128,50 +125,53 @@ const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
   };
   const handlerFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    if (isValid && roomInfo && addBooking) {
-      addBooking({
-        roomId,
-        roomInformation: {
-          number: roomInfo.number,
-          type: roomInfo.type,
-          images: roomInfo.images,
-          rating: roomInfo.rating,
-          numberOfReviews: roomInfo.numberOfReviews,
-        },
-        pricePerDay,
-        dates: {
-          dateFrom: dateToJSON(
-            Timestamp.fromDate(
-              new Date(dateFrom === null ? 0 : dateFrom) as Date,
-            ),
-          ),
-          dateTo: dateToJSON(
-            Timestamp.fromDate(new Date(dateTo === null ? 0 : dateTo) as Date),
-          ),
-        },
-        sale,
-        guest: {
-          adults: guestsDropdownInfo.items.adults.value,
-          kids: guestsDropdownInfo.items.kids.value,
-          babies: guestsDropdownInfo.items.babies.value,
-        },
-        additionalServices: {
-          linen: {
-            description: `${t('setsUnderwear')}. ${priceSetLinen}₽ ${t(
-              'forSet',
-            )}`,
-            price: priceService,
+    if (isValid && roomInfo) {
+      dispatch(
+        bookingAdd({
+          roomId,
+          roomInformation: {
+            number: roomInfo.number,
+            type: roomInfo.type,
+            images: roomInfo.images,
+            rating: roomInfo.rating,
+            numberOfReviews: roomInfo.numberOfReviews,
           },
-        },
-        totalPrice: accommodationPrice - sale + priceService,
-        confirmed: false,
-      });
+          pricePerDay,
+          dates: {
+            dateFrom: dateToJSON(
+              Timestamp.fromDate(
+                new Date(dateFrom === null ? 0 : dateFrom) as Date,
+              ),
+            ),
+            dateTo: dateToJSON(
+              Timestamp.fromDate(
+                new Date(dateTo === null ? 0 : dateTo) as Date,
+              ),
+            ),
+          },
+          sale,
+          guest: {
+            adults: guestsDropdownInfo.items.adults.value,
+            kids: guestsDropdownInfo.items.kids.value,
+            babies: guestsDropdownInfo.items.babies.value,
+          },
+          additionalServices: {
+            linen: {
+              description: `${t('setsUnderwear')}. ${priceSetLinen}₽ ${t(
+                'forSet',
+              )}`,
+              price: priceService,
+            },
+          },
+          totalPrice: accommodationPrice - sale + priceService,
+          confirmed: false,
+        }),
+      );
     }
   };
-
   useEffect(() => {
-    fetchRoomBooking(roomId);
-  }, [roomId, fetchRoomBooking]);
+    dispatch(roomBookingFetch(roomId));
+  }, []);
 
   const onPopupClick = (): void => {
     setShowPopup((prev) => !prev);
@@ -199,11 +199,11 @@ const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
     } else {
       setCountDay(1);
     }
-  }, [dateTo, dateFrom, bookings, bookingAddedWithSuccess]);
+  }, [dateTo, dateFrom, bookings, bookingsAddedWithSuccess]);
 
   useEffect(() => {
-    setShowPopup(Boolean(bookingError));
-  }, [bookingError]);
+    setShowPopup(!!isBookingAddError);
+  }, [isBookingAddError]);
 
   useEffect(() => {
     if (isValid) {
@@ -222,9 +222,53 @@ const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
     }
   }, [countDay, pricePerDay]);
 
+  useEffect(() => {
+    const parsedQuery = JSON.parse(
+      `${router.query.filter || '{}'}`,
+    ) as RoomsFilter;
+    const { dates, guests } = parsedQuery;
+
+    if (dates) {
+      setDateFrom(dates.dateFrom);
+      setDateTo(dates.dateTo);
+    }
+    if (guests) {
+      setGuestsDropdownItems(guests);
+    }
+  }, [router.query.filter]);
+
+  useEffect(() => {
+    const { adults, kids, babies } = guestsDropdownInfo.items;
+    const datesDefined = dateFrom && dateTo;
+    if (datesDefined) {
+      const newFilterQuery = {
+        dates: {
+          dateFrom,
+          dateTo,
+        },
+        guests: {
+          adults,
+          kids,
+          babies,
+        },
+      };
+      const newFilterString = JSON.stringify(newFilterQuery);
+
+      router.push(
+        {
+          query: {
+            filter: newFilterString,
+          },
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  }, [dateFrom, dateTo, guestsDropdownInfo.items]);
+
   return (
     <form className={styles.costCard} onSubmit={handlerFormSubmit}>
-      {bookingAddedWithSuccess && <SubmitPopup />}
+      {bookingsAddedWithSuccess && <SubmitPopup />}
       {roomLoading && <LoadingPopup />}
       <div className={styles.header}>
         <div className={styles.detail}>
@@ -295,7 +339,7 @@ const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
         </div>
       </div>
       <div className={styles.button}>
-        {user ? (
+        {userAuth ? (
           <Button
             size="m"
             text={t('makeReservation')}
@@ -317,6 +361,5 @@ const CostCard: FC<CostCardProps> = observer(({ roomId }) => {
       <WarningPopup isShow={isShowPopup} onClick={onPopupClick} />
     </form>
   );
-});
-
+};
 export { CostCard };

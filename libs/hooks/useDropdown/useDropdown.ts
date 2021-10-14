@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import type { DropdownItem, SetDropdownItems, UseDropdown } from './types';
+import type {
+  DropdownItem,
+  SetDropdownItems,
+  UseDropdown,
+  DropdownInfo,
+} from './types';
 
 const useDropdown: UseDropdown = (
   category: 'rooms' | 'guests',
@@ -47,38 +52,46 @@ const useDropdown: UseDropdown = (
         },
   );
 
+  const getDropdownInfo = (
+    currentItems: Record<string, DropdownItem>,
+  ): DropdownInfo => ({
+    title: category === 'guests' ? t('guests') : t('roomConveniences'),
+    textDefault: category === 'guests' ? t('howManyGuests') : t('howManyRooms'),
+    items: currentItems,
+    combineValues:
+      category === 'guests'
+        ? {
+            name: t('guests', {
+              count: currentItems.adults.value + currentItems.kids.value,
+            }),
+            itemKeys: ['adults', 'kids'],
+          }
+        : undefined,
+    isTumbler: category === 'guests',
+  });
+
+  const dropdownInfo = useRef(getDropdownInfo(items));
+
   const setDropdownItems: SetDropdownItems = (itemsToChange) => {
-    const updatedItems = { ...items };
-    Object.keys(itemsToChange).forEach((key) => {
-      updatedItems[key].value = itemsToChange[key].value || 0;
-      updatedItems[key].name = t(key, { count: itemsToChange[key].value });
-      updatedItems[key].maxValue =
-        itemsToChange[key].maxValue ?? updatedItems[key].maxValue;
-      updatedItems[key].isDisabled =
-        itemsToChange[key].isDisabled || updatedItems[key].isDisabled;
+    setItems(() => {
+      const updatedItems = { ...items };
+      Object.keys(itemsToChange).forEach((key) => {
+        updatedItems[key].value = itemsToChange[key].value || 0;
+        updatedItems[key].name = t(key, {
+          count: itemsToChange[key].value ?? items[key].value,
+        });
+        updatedItems[key].maxValue =
+          itemsToChange[key].maxValue ?? updatedItems[key].maxValue;
+        updatedItems[key].isDisabled =
+          itemsToChange[key].isDisabled || updatedItems[key].isDisabled;
+      });
+
+      dropdownInfo.current = getDropdownInfo(updatedItems);
+      return updatedItems;
     });
-    setItems(updatedItems);
   };
 
-  return [
-    {
-      title: category === 'guests' ? t('guests') : t('roomConveniences'),
-      textDefault:
-        category === 'guests' ? t('howManyGuests') : t('howManyRooms'),
-      items,
-      combineValues:
-        category === 'guests'
-          ? {
-              name: t('guests', {
-                count: items.adults.value + items.kids.value,
-              }),
-              itemKeys: ['adults', 'kids'],
-            }
-          : undefined,
-      isTumbler: category === 'guests',
-    },
-    setDropdownItems,
-  ];
+  return [dropdownInfo.current, setDropdownItems];
 };
 
 export { useDropdown };

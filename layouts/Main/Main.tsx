@@ -24,6 +24,7 @@ const Main: FC<MainProps> = ({ title, description, keywords, children }) => {
       <div className={styles.main}>
         <div className={styles.content}>
           <Header {...headerProps} />
+
           {children}
         </div>
         <Footer />

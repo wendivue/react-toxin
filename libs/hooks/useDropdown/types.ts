@@ -16,6 +16,14 @@ type DropdownItem = {
   isDisabled?: boolean;
 };
 
+type DropdownInfo = {
+  title: string;
+  textDefault: string;
+  items: Record<string, DropdownItem>;
+  combineValues?: { name: string; itemKeys: Array<string> };
+  isTumbler: boolean;
+};
+
 type UseDropdown = (
   category: 'rooms' | 'guests',
   initialItems?: Record<
@@ -26,15 +34,6 @@ type UseDropdown = (
       isDisabled?: boolean;
     }
   >,
-) => [
-  {
-    title: string;
-    textDefault: string;
-    items: Record<string, DropdownItem>;
-    combineValues?: { name: string; itemKeys: Array<string> };
-    isTumbler: boolean;
-  },
-  SetDropdownItems,
-];
+) => [DropdownInfo, SetDropdownItems];
 
-export type { UseDropdown, SetDropdownItems, DropdownItem };
+export type { UseDropdown, SetDropdownItems, DropdownItem, DropdownInfo };

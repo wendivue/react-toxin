@@ -1,14 +1,13 @@
 import React, { FC, useRef } from 'react';
 import moment from 'moment';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
 
 import { PopUpProps } from '@/BookingCard/PopUp/types';
 import { Button } from '@/Button';
 
 import styles from './PopUp.module.scss';
 
-const PopUp: FC<PopUpProps> = observer((props) => {
+const PopUp: FC<PopUpProps> = (props) => {
   const { t } = useTranslation(['booking', 'filter']);
 
   const {
@@ -168,6 +167,5 @@ const PopUp: FC<PopUpProps> = observer((props) => {
       </div>
     </div>
   );
-});
-
+};
 export { PopUp };

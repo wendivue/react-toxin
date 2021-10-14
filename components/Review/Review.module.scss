@@ -43,10 +43,9 @@
 
 .text {
   @include font-normal($lh: 24px, $color: $text-color-secondary);
-
-  margin: 0;
   word-break: break-word;
 
+  margin: 0;
   @include media-sm {
     padding: 0 15px;
   }

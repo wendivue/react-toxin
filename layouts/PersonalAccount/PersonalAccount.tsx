@@ -1,11 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
-import { runInAction } from 'mobx';
 
-import { useStore } from '@/libs/hooks/useStore';
+import { bookingFetch } from 'store/booking/bookingActions';
+import {
+  authSetAvatar,
+  authSetLogin,
+  authSignOutRequest,
+  authUpdateUserState,
+} from 'store/auth/authActions';
 import { Firebase } from '@/libs/Firebase';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
 import { UserCard } from '@/UserCard';
 import { PasswordChangeCard } from '@/PasswordChangeCard';
 import { DeleteUserCard } from '@/DeleteUserCard';
@@ -19,21 +25,15 @@ import type { UserStatistics } from '@/UserCard/UserStatisticsInfo/types';
 
 import classes from './PersonalAccount.module.scss';
 
-const PersonalAccount: React.FC = observer(() => {
+const PersonalAccount: React.FC = React.memo(() => {
   const { t } = useTranslation(['booking', 'auth']);
   const router = useRouter();
-  const {
-    authStore: {
-      user,
-      isUserLoading,
-      userError,
-      updateUserState,
-      setLogin,
-      setAvatar,
-      signOutRequest,
-    },
-    bookingStore: { bookings, fetchBookings },
-  } = useStore();
+  const dispatch = useDispatch();
+
+  const { user, isUserLoading, userError } = useTypedSelector(
+    (state) => state.auth,
+  );
+  const { bookings } = useTypedSelector((state) => state.booking);
 
   const [currentUser, setCurrentUser] = useState(user);
 
@@ -71,15 +71,15 @@ const PersonalAccount: React.FC = observer(() => {
 
   const handleUserInfoChange = useCallback(
     (userInfo: { name: string; surname: string }) => {
-      setLogin(userInfo);
+      dispatch(authSetLogin(userInfo));
     },
-    [setLogin],
+    [dispatch],
   );
 
   const handleUserPopupClick = useCallback(() => {
-    updateUserState();
+    dispatch(authUpdateUserState());
     setIsUserPopupOpen(false);
-  }, [updateUserState]);
+  }, [dispatch]);
 
   const handleFileExtensionPopupClick = useCallback(() => {
     setIsFileExtensionPopupOpen(false);
@@ -98,9 +98,9 @@ const PersonalAccount: React.FC = observer(() => {
         return;
       }
 
-      setAvatar(fileList[0]);
+      dispatch(authSetAvatar(fileList[0]));
     },
-    [setAvatar],
+    [dispatch],
   );
 
   const handleLogoutButtonClick = useCallback(
@@ -109,9 +109,9 @@ const PersonalAccount: React.FC = observer(() => {
   );
 
   const handleConfirmLogoutPopupSubmit = useCallback(() => {
-    signOutRequest();
+    dispatch(authSignOutRequest());
     router.replace('/');
-  }, [router, signOutRequest]);
+  }, [dispatch, router]);
 
   const handleConfirmLogoutPopupClose = useCallback(
     () => setIsConfirmLogoutPopupOpen(false),
@@ -128,8 +128,8 @@ const PersonalAccount: React.FC = observer(() => {
   }, [router]);
 
   useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
+    dispatch(bookingFetch());
+  }, [dispatch]);
 
   useEffect(() => {
     if (user) {
@@ -143,43 +143,39 @@ const PersonalAccount: React.FC = observer(() => {
     }
   }, [userError]);
 
-  useEffect(
-    () =>
-      runInAction(() => {
-        if (!bookings) return;
+  useEffect(() => {
+    if (!bookings) return;
 
-        const expensesItems = {
-          discount: {
-            title: t('sale'),
-            value: 0,
-          },
-          additionalServices: {
-            title: t('additionalServices'),
-            value: 0,
-          },
-          accommodation: {
-            title: t('accommodation'),
-            value: 0,
-          },
-        };
-        Object.values(bookings).forEach((booking) => {
-          if (!booking.confirmed) return;
+    const expensesItems = {
+      discount: {
+        title: t('sale'),
+        value: 0,
+      },
+      additionalServices: {
+        title: t('additionalServices'),
+        value: 0,
+      },
+      accommodation: {
+        title: t('accommodation'),
+        value: 0,
+      },
+    };
+    Object.values(bookings).forEach((booking) => {
+      if (!booking.confirmed) return;
 
-          expensesItems.discount.value += booking.sale;
-          Object.values(booking.additionalServices).forEach((service) => {
-            expensesItems.additionalServices.value += service.price;
-          });
-          expensesItems.accommodation.value += booking.totalPrice;
-        });
-        setStatistics({
-          expenses: {
-            title: t('expensesForAllTime'),
-            items: expensesItems,
-          },
-        });
-      }),
-    [bookings, t],
-  );
+      expensesItems.discount.value += booking.sale;
+      Object.values(booking.additionalServices).forEach((service) => {
+        expensesItems.additionalServices.value += service.price;
+      });
+      expensesItems.accommodation.value += booking.totalPrice;
+    });
+    setStatistics({
+      expenses: {
+        title: t('expensesForAllTime'),
+        items: expensesItems,
+      },
+    });
+  }, [bookings, t]);
 
   return (
     <div className={classes.personalAccount}>

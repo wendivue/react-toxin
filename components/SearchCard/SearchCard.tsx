@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
 
 import { DropDown } from '@/DropDown';
 import { HotelCard } from '@/HotelCard';
@@ -13,38 +12,24 @@ import { SliderValues } from '@/PriceRange/types';
 import { DropdownDate } from '@/DropdownDate';
 import { RenderChild } from '@/DropDown/types';
 import { HotelItemProps } from '@/HotelCard/types';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
 import { useDropdown } from '@/libs/hooks/useDropdown';
 import { useCheckboxes } from '@/libs/hooks/useCheckboxes';
-import { AllRooms, RoomsFilterFirebase } from 'storeMobX/rooms/roomsTypes';
-import { useStore } from '@/libs/hooks/useStore';
+import { roomsFetchFiltered, roomsSetFilter } from 'store/rooms/roomsActions';
+import { AllRooms, RoomsFilter } from 'store/rooms/roomsTypes';
+import { getDates } from 'helpers/getDates';
 
 import styles from './SearchCard.module.scss';
 
-const SearchCard: FC = observer(() => {
+const SearchCard: FC = () => {
   const { t } = useTranslation(['common', 'filter']);
   const router = useRouter();
-  const {
-    roomsStore: {
-      filter,
-      filteredRooms,
-      isRoomsLoading,
-      setFilter,
-      fetchFiltered,
-    },
-  } = useStore();
+  const filter = useTypedSelector((state) => {
+    return state.rooms.filter;
+  });
+  const filterDates = getDates(filter);
 
-  const filterDateFrom = filter?.dates?.dateFrom ?? null;
-  const filterDateTo = filter?.dates?.dateTo ?? null;
-  const filterAdults = filter?.guests?.adults;
-  const filterKids = filter?.guests?.kids;
-  const filterBabies = filter?.guests?.babies;
-  const filterBedrooms = filter?.conveniences?.bedrooms;
-  const filterBeds = filter?.conveniences?.beds;
-  const filterBathrooms = filter?.conveniences?.bathrooms;
-  const filterPriceRange = filter?.priceRange;
-  const filterRules = filter?.rules;
-  const filterAvailabilities = filter?.availabilities;
-  const filterFeatures = filter?.features;
+  const isLoading = useTypedSelector((state) => state.rooms.isRoomsLoading);
 
   const [guestsDropdownInfo, setGuestsDropdownValues] = useDropdown('guests');
   const [roomsDropdownInfo, setRoomsDropdownValues] = useDropdown('rooms');
@@ -58,74 +43,95 @@ const SearchCard: FC = observer(() => {
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
 
-  const [cardsSlice, setCardsSlice] = useState<AllRooms | null>(filteredRooms);
-  const filteredRoomsLength = filteredRooms
-    ? Object.keys(filteredRooms).length
-    : 0;
+  const dispatch = useDispatch();
+  const selector = useTypedSelector((state) => state.rooms.filteredRooms);
+  const [cardsSlice, setCardsSlice] = useState<AllRooms | null>(selector);
+  const selectorLength = selector ? Object.keys(selector).length : 0;
 
   const onSetFrom = (value: Date | null): void => {
     const onSetValue = value && +value;
-    if (filterDateFrom !== onSetValue) {
-      setFilter({
-        dates: { dateFrom: onSetValue, dateTo: filterDateTo },
-      });
+    if (filterDates.dateFrom !== onSetValue) {
+      dispatch(
+        roomsSetFilter({
+          dates: { dateFrom: onSetValue, dateTo: filterDates.dateTo },
+        }),
+      );
+      dispatch(roomsFetchFiltered());
     }
   };
 
   const onSetTo = (value: Date | null): void => {
     const onSetValue = value && +value;
-    if (filterDateTo !== onSetValue) {
-      setFilter({
-        dates: { dateTo: onSetValue, dateFrom: filterDateFrom },
-      });
+    if (filterDates.dateTo !== onSetValue) {
+      dispatch(
+        roomsSetFilter({
+          dates: { dateTo: onSetValue, dateFrom: filterDates.dateFrom },
+        }),
+      );
+      dispatch(roomsFetchFiltered());
     }
   };
 
   const onClearDropdownDate = (): void => {
-    setFilter({
-      dates: { dateTo: null, dateFrom: null },
-    });
+    dispatch(
+      roomsSetFilter({
+        dates: { dateTo: null, dateFrom: null },
+      }),
+    );
+    dispatch(roomsFetchFiltered());
   };
 
   const onPriceRangeChange = (value: SliderValues): void => {
-    setFilter({
-      priceRange: value,
-    });
+    dispatch(
+      roomsSetFilter({
+        priceRange: value,
+      }),
+    );
+    dispatch(roomsFetchFiltered());
   };
 
   const onRulesChange = (newValues: boolean[]): void => {
     setRulesCheckboxValues(newValues);
-    setFilter({
-      rules: {
-        smoke: newValues[0],
-        pets: newValues[1],
-        guests: newValues[2],
-      },
-    });
+    dispatch(
+      roomsSetFilter({
+        rules: {
+          smoke: newValues[0],
+          pets: newValues[1],
+          guests: newValues[2],
+        },
+      }),
+    );
+    dispatch(roomsFetchFiltered());
   };
 
   const onAvailabilitiesChange = (newValues: boolean[]): void => {
     setAvailabilitiesCheckboxValues(newValues);
-    setFilter({
-      availabilities: {
-        wideCorridor: newValues[0],
-        helpForInvalids: newValues[1],
-      },
-    });
+    dispatch(
+      roomsSetFilter({
+        availabilities: {
+          wideCorridor: newValues[0],
+          helpForInvalids: newValues[1],
+        },
+      }),
+    );
+    dispatch(roomsFetchFiltered());
   };
 
   const onFeaturesChange = (newValues: boolean[]): void => {
     setFeaturesCheckboxValues(newValues);
-    setFilter({
-      features: {
-        breakfast: newValues[0],
-        table: newValues[1],
-        feedingChair: newValues[2],
-        cot: newValues[3],
-        television: newValues[4],
-        shampoo: newValues[5],
-      },
-    });
+    dispatch(
+      roomsSetFilter({
+        features: {
+          breakfast: newValues[0],
+          table: newValues[1],
+          feedingChair: newValues[2],
+          cot: newValues[3],
+          television: newValues[4],
+          shampoo: newValues[5],
+        },
+      }),
+    );
+    dispatch(roomsFetchFiltered());
   };
 
   const onDropdownChangeGuest = (guestItems: RenderChild): void => {
@@ -134,13 +140,12 @@ const SearchCard: FC = observer(() => {
       updatedItems[key] = { ...guestItems[key] };
     });
     setGuestsDropdownValues(updatedItems);
-    setFilter({
-      guests: {
-        adults: updatedItems.adults.value ?? 0,
-        kids: updatedItems.kids.value ?? 0,
-        babies: updatedItems.babies.value ?? 0,
-      },
-    });
+    dispatch(
+      roomsSetFilter({
+        guests: updatedItems,
+      }),
+    );
+    dispatch(roomsFetchFiltered());
   };
 
   const onDropdownChangeRoom = (roomItems: RenderChild): void => {
@@ -149,16 +154,22 @@ const SearchCard: FC = observer(() => {
       updatedItems[key] = { ...roomItems[key] };
     });
     setRoomsDropdownValues(updatedItems);
-    setFilter({
-      conveniences: {
-        bedrooms: updatedItems.bedrooms.value ?? 0,
-        beds: updatedItems.beds.value ?? 0,
-        bathrooms: updatedItems.bathrooms.value ?? 0,
-      },
-    });
+    dispatch(
+      roomsSetFilter({
+        conveniences: updatedItems,
+      }),
+    );
+    dispatch(roomsFetchFiltered());
   };
 
   const createHotelItem = (roomId: string): HotelItemProps | null => {
+    const { dates, guests } = JSON.parse(
+      `${router.query.filter || '{}'}`,
+    ) as RoomsFilter;
+    const roomQueryFilter = { dates, guests };
+    const query = `?filter=${encodeURIComponent(
+      JSON.stringify(roomQueryFilter),
+    )}`;
     if (cardsSlice) {
       const room = cardsSlice[roomId];
       const isLux = room.type === 'lux';
@@ -168,7 +179,7 @@ const SearchCard: FC = observer(() => {
           price: room.price,
           roomNumber: room.number,
         },
-        link: `/rooms/room-details/${roomId}`,
+        link: `/rooms/room-details/${roomId}${query}`,
         review: room.numberOfReviews,
         isLux,
         starList: { rating: room.rating, disabled: false },
@@ -180,164 +191,148 @@ const SearchCard: FC = observer(() => {
   };
 
   useEffect(() => {
-    if (typeof router.query.filter === 'string') {
-      const parseQuery = JSON.parse(router.query.filter) as RoomsFilterFirebase;
-
-      const {
-        dates,
-        guests,
-        priceRange,
-        rules,
-        availabilities,
-        conveniences,
-        features,
-      } = parseQuery;
-
-      if (dates) {
-        setFilter({
-          dates: {
-            dateFrom: dates.dateFrom && +dates.dateFrom,
-            dateTo: dates.dateTo && +dates.dateTo,
-          },
-        });
-      }
-
-      if (guests) {
-        setFilter({
-          guests: {
-            adults: guests.adults,
-            kids: guests.kids,
-            babies: guests.babies,
-          },
-        });
-      }
-
-      if (priceRange) {
-        setFilter({
-          priceRange,
-        });
-      }
-
-      if (rules) {
-        setFilter({
-          rules,
-        });
-      }
-
-      if (availabilities) {
-        setFilter({
-          availabilities,
-        });
-      }
-
-      if (conveniences) {
-        setFilter({
-          conveniences: {
-            bedrooms: conveniences.bedrooms,
-            beds: conveniences.beds,
-            bathrooms: conveniences.bathrooms,
-          },
-        });
-      }
-
-      if (features) {
-        setFilter({
-          features,
-        });
-      }
+    if (
+      filter?.guests &&
+      JSON.stringify(filter.guests) !== JSON.stringify(guestsDropdownInfo.items)
+    ) {
+      setGuestsDropdownValues(filter.guests);
     }
-  }, [router.query.filter]);
+  }, [filter?.guests]);
 
   useEffect(() => {
-    const filtered = {
-      dates: {
-        dateFrom: filterDateFrom,
-        dateTo: filterDateTo,
-      },
-      guests: {
-        adults: filterAdults,
-        kids: filterKids,
-        babies: filterBabies,
-      },
-      priceRange: filterPriceRange,
-      rules: filterRules,
-      availabilities: filterAvailabilities,
-      conveniences: {
-        bedrooms: filterBedrooms,
-        beds: filterBeds,
-        bathrooms: filterBathrooms,
-      },
-      features: filterFeatures,
-    };
-
-    const filterString = JSON.stringify(filtered);
-    if (filterString !== router.query.filter) {
-      router.push({ query: { filter: filterString } }, undefined, {
-        shallow: true,
-      });
-    }
-  }, [
-    filterAdults,
-    filterAvailabilities,
-    filterBabies,
-    filterBathrooms,
-    filterBedrooms,
-    filterBeds,
-    filterDateFrom,
-    filterDateTo,
-    filterFeatures,
-    filterKids,
-    filterPriceRange,
-    filterRules,
-  ]);
-
-  useEffect(() => {
-    setGuestsDropdownValues({
-      adults: { value: filterAdults },
-      kids: { value: filterKids },
-      babies: { value: filterBabies },
-    });
-  }, [filterAdults, filterBabies, filterKids]);
-
-  useEffect(() => {
-    setRoomsDropdownValues({
-      bedrooms: { value: filterBedrooms },
-      beds: { value: filterBeds },
-      bathrooms: { value: filterBathrooms },
-    });
-  }, [filterBathrooms, filterBedrooms, filterBeds]);
-
-  useEffect(() => {
-    if (filterRules) {
+    if (filter?.rules) {
       setRulesCheckboxValues([
-        !!filterRules.smoke,
-        !!filterRules.pets,
-        !!filterRules.guests,
+        !!filter.rules.smoke,
+        !!filter.rules.pets,
+        !!filter.rules.guests,
       ]);
     }
-  }, [filterRules]);
+  }, [filter?.rules]);
 
   useEffect(() => {
-    if (filterAvailabilities) {
+    if (filter?.availabilities) {
       setAvailabilitiesCheckboxValues([
-        !!filterAvailabilities.wideCorridor,
-        !!filterAvailabilities.helpForInvalids,
+        !!filter.availabilities.wideCorridor,
+        !!filter.availabilities.helpForInvalids,
       ]);
     }
-  }, [filterAvailabilities]);
+  }, [filter?.availabilities]);
 
   useEffect(() => {
-    if (filterFeatures) {
+    if (filter?.features) {
       setFeaturesCheckboxValues([
-        !!filterFeatures.breakfast,
-        !!filterFeatures.table,
-        !!filterFeatures.feedingChair,
-        !!filterFeatures.cot,
-        !!filterFeatures.television,
-        !!filterFeatures.shampoo,
+        !!filter.features.breakfast,
+        !!filter.features.table,
+        !!filter.features.feedingChair,
+        !!filter.features.cot,
+        !!filter.features.television,
+        !!filter.features.shampoo,
       ]);
     }
-  }, [filterFeatures]);
+  }, [filter?.features]);
+
+  useEffect(() => {
+    if (filter?.conveniences) {
+      setRoomsDropdownValues(filter.conveniences);
+    }
+  }, [filter?.conveniences]);
+
+  useEffect(() => {
+    if (filter) {
+      const filterString = JSON.stringify(filter);
+      if (router.query.filter !== filterString) {
+        router.push({ query: { filter: filterString } }, undefined, {
+          shallow: true,
+        });
+      }
+    }
+  }, [filter]);
+
+  useEffect(() => {
+    if (typeof router.query.filter === 'string') {
+      const parseQuery = JSON.parse(router.query.filter) as RoomsFilter;
+      // eslint-disable-next-line no-prototype-builtins
+      if (parseQuery.hasOwnProperty('dates')) {
+        const { dates } = parseQuery;
+        if (dates) {
+          dispatch(
+            roomsSetFilter({
+              dates: {
+                dateFrom: dates.dateFrom && +dates.dateFrom,
+                dateTo: dates.dateTo && +dates.dateTo,
+              },
+            }),
+          );
+        }
+      }
+      // eslint-disable-next-line no-prototype-builtins
+      if (parseQuery.hasOwnProperty('guests')) {
+        const { guests } = parseQuery;
+        if (guests) {
+          dispatch(
+            roomsSetFilter({
+              guests,
+            }),
+          );
+        }
+      }
+      // eslint-disable-next-line no-prototype-builtins
+      if (parseQuery.hasOwnProperty('priceRange')) {
+        const { priceRange } = parseQuery;
+        if (priceRange) {
+          dispatch(
+            roomsSetFilter({
+              priceRange,
+            }),
+          );
+        }
+      }
+      // eslint-disable-next-line no-prototype-builtins
+      if (parseQuery.hasOwnProperty('rules')) {
+        const { rules } = parseQuery;
+        if (rules) {
+          dispatch(
+            roomsSetFilter({
+              rules,
+            }),
+          );
+        }
+      }
+      // eslint-disable-next-line no-prototype-builtins
+      if (parseQuery.hasOwnProperty('availabilities')) {
+        const { availabilities } = parseQuery;
+        if (availabilities) {
+          dispatch(
+            roomsSetFilter({
+              availabilities,
+            }),
+          );
+        }
+      }
+      // eslint-disable-next-line no-prototype-builtins
+      if (parseQuery.hasOwnProperty('conveniences')) {
+        const { conveniences } = parseQuery;
+        if (conveniences) {
+          dispatch(
+            roomsSetFilter({
+              conveniences,
+            }),
+          );
+        }
+      }
+      // eslint-disable-next-line no-prototype-builtins
+      if (parseQuery.hasOwnProperty('features')) {
+        const { features } = parseQuery;
+        if (features) {
+          dispatch(
+            roomsSetFilter({
+              features,
+            }),
+          );
+        }
+      }
+    }
+  }, [router]);
 
   useEffect(() => {
     const limit = 12;
@@ -347,25 +342,17 @@ const SearchCard: FC = observer(() => {
     if (page > 1) {
       end = limit * page;
       first = end - limit;
-      if (filteredRoomsLength === page) end = filteredRoomsLength;
+      if (selectorLength === page) end = selectorLength;
     }
 
-    if (filteredRooms) {
+    if (selector) {
       setCardsSlice(
-        Object.fromEntries(
-          [...Object.entries(filteredRooms)].slice(first, end),
-        ),
+        Object.fromEntries([...Object.entries(selector)].slice(first, end)),
       );
     }
 
-    setPageCount(Math.ceil(filteredRoomsLength / 12));
-  }, [page, filteredRooms, filteredRoomsLength]);
-
-  useEffect(() => {
-    if (router.query.filter !== null) {
-      fetchFiltered();
-    }
-  }, [router.query.filter]);
+    setPageCount(Math.ceil(selectorLength / 12));
+  }, [page, selector, selectorLength]);
 
   return (
     <main className={styles.main}>
@@ -373,8 +360,12 @@ const SearchCard: FC = observer(() => {
         <aside className={styles.sidebar}>
           <div className={styles.dropdownDate}>
             <DropdownDate
-              startValue={filterDateFrom ? new Date(filterDateFrom) : null}
-              endValue={filterDateTo ? new Date(filterDateTo) : null}
+              startValue={
+                filterDates.dateFrom ? new Date(filterDates.dateFrom) : null
+              }
+              endValue={
+                filterDates.dateTo ? new Date(filterDates.dateTo) : null
+              }
               setFrom={onSetFrom}
               setTo={onSetTo}
               onClear={onClearDropdownDate}
@@ -417,11 +408,10 @@ const SearchCard: FC = observer(() => {
         <article className={styles.content}>
           <h1 className={styles.title}>{t('roomsForYou')}</h1>
           <ul className={styles.cardList}>
-            {isRoomsLoading && (
+            {isLoading && (
               <p className={styles.textLoading}>{t('roomsLoading')}</p>
             )}
             {cardsSlice &&
-              !isRoomsLoading &&
               Object.keys(cardsSlice).map((roomId) => {
                 const item = createHotelItem(roomId);
                 if (item) {
@@ -446,6 +436,6 @@ const SearchCard: FC = observer(() => {
       </div>
     </main>
   );
-});
+};
 
 export { SearchCard };

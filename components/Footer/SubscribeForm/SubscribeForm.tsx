@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
+import { useDispatch } from 'react-redux';
 
+import { subscribeRequest } from 'store/subscription/subscriptionActions';
 import { TextField } from '@/TextField';
-import { useStore } from '@/libs/hooks/useStore';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
 
 import styles from './SubscribeForm.module.scss';
 import { SubscribeResultPopup } from './SubscribeResultPopup';
 
-const SubscribeForm = observer((): JSX.Element => {
+const SubscribeForm = (): JSX.Element => {
   const { t } = useTranslation('common');
 
-  const {
-    subscriptionStore: { lastEmail, isLoading, error, subscribeEmail },
-  } = useStore();
+  const dispatch = useDispatch();
+  const { lastEmail, isLoading, error } = useTypedSelector(
+    (state) => state.subscription,
+  );
 
   const [email, setEmail] = useState('');
   const [isInputDisabled, setIsInputDisabled] = useState(false);
@@ -31,7 +33,7 @@ const SubscribeForm = observer((): JSX.Element => {
 
     const emailInput = evt.currentTarget.elements.namedItem('email');
     if (emailInput instanceof HTMLInputElement) {
-      subscribeEmail(emailInput.value);
+      dispatch(subscribeRequest(emailInput.value));
     }
 
     setEmail('');
@@ -78,6 +80,6 @@ const SubscribeForm = observer((): JSX.Element => {
       />
     </form>
   );
-});
+};
 
 export { SubscribeForm };
