@@ -1,0 +1,150 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.main {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  border-bottom: solid 1px $transparent_black;
+  padding: 15px 15px 74px;
+}
+
+.wrapper {
+  display: flex;
+  flex: 1 1 100%;
+  justify-content: space-between;
+  max-width: 1160px;
+
+  @include media-lg {
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.sidebar {
+  width: 266px;
+
+  @include media-lg {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    justify-items: start;
+    width: 100%;
+    gap: 20px;
+
+    > :nth-child(1n) {
+      align-self: flex-start;
+      margin: 0;
+      width: 266px;
+    }
+  }
+
+  @include media-sm {
+    justify-content: center;
+  }
+}
+
+.dropdownDate {
+  margin-top: 16px;
+}
+
+.dropdownPeople {
+  margin-top: 22px;
+}
+
+.range {
+  margin-top: 32px;
+}
+
+.dropdownRoom {
+  margin-top: 27px;
+}
+
+.checkboxRule {
+  margin-top: 30px;
+}
+
+.checkboxAvailability {
+  margin-top: 32px;
+}
+
+.checkboxAmenities {
+  margin-top: 16px;
+}
+
+.content {
+  width: 100%;
+  max-width: 834px;
+}
+
+.title {
+  @include font-bold;
+
+  margin: 17px 0 20px;
+
+  @include media-lg {
+    text-align: center;
+  }
+}
+
+.cardList {
+  display: flex;
+  column-gap: 12px;
+  flex-flow: wrap;
+  margin: 0;
+  padding: 0;
+  row-gap: 21px;
+
+  @include media-sm {
+    flex-flow: column;
+    align-items: center;
+  }
+}
+
+.card {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  margin-left: -14px;
+
+  &Hide {
+    display: none;
+  }
+}
+
+.textPriceSlider {
+  @include font-normal($fs: 12px);
+
+  margin: 0;
+  margin-top: 1px;
+}
+
+.wrapperNotFound {
+  display: flex;
+  justify-content: center;
+  margin: 120px 0;
+  width: 100%;
+}
+
+.wrapperTextCards {
+  border-radius: 30px;
+  padding: 0 70px;
+  background: $purple-gradient;
+}
+
+.textCards {
+  @include font-normal(16px);
+
+  color: #fff;
+}
+
+.textLoading {
+  @include font-normal(16px);
+}

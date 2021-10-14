@@ -1,0 +1,41 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+@keyframes show-done {
+  0% {
+    top: 100%;
+  }
+}
+
+@keyframes show-circle {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.circle {
+  animation-name: show-circle;
+  animation-duration: 3.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+}
+
+.done {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 100;
+  padding: 0;
+  width: 80px;
+  height: 80px;
+  color: $box-shadow-light;
+  transform: translate(-50%, -50%);
+  animation-name: show-done;
+  animation-duration: 2.3s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+}

@@ -1,0 +1,26 @@
+@import '@/styles/variables';
+
+.wrapper {
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  padding: 40px 30px 30px;
+  max-width: 380px;
+  box-shadow: $box-shadow-light;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.title {
+  margin: 0 0 21px;
+  font-size: $font-size-big;
+  line-height: 1.2;
+  color: $text-color-main;
+}
+
+.dropDate {
+  margin-bottom: 24px;
+}
+
+.dropdown {
+  margin-bottom: 30px;
+}

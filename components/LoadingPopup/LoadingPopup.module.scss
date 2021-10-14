@@ -1,0 +1,46 @@
+@import '@/styles/variables';
+
+@keyframes show-circle {
+  0% {
+    stroke-dasharray: 14 100;
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dasharray: 100 0;
+  }
+}
+
+.loading {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: white;
+}
+
+.done {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10;
+  padding: 0;
+  width: 80px;
+  height: 80px;
+  transform: translate(-50%, -50%);
+}
+
+.circle {
+  animation-name: show-circle;
+  animation-duration: 3.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+}

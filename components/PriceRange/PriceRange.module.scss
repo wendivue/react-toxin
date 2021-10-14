@@ -1,0 +1,26 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.priceRange {
+  width: 266px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  margin-bottom: 13px;
+}
+
+.title {
+  @include font-bold($font-size-small, $lh: 14px);
+
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.value {
+  @include font-normal($font-size-small, $lh: 14px);
+
+  color: $text-color-translucent;
+}

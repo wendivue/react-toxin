@@ -1,0 +1,10 @@
+@import 'styles/variables';
+
+.userAvatar {
+  border: 1px solid white;
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+  box-shadow: 0 10px 20px 0 $shadow-color;
+  box-sizing: border-box;
+}

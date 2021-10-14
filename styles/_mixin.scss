@@ -1,0 +1,108 @@
+@import 'variables';
+
+@mixin media-xxx {
+  @media (max-width: 1400px) {
+    @content;
+  }
+}
+
+@mixin media-lg {
+  @media (max-width: 1170px) {
+    @content;
+  }
+}
+
+@mixin media-md {
+  @media (max-width: 1000px) {
+    @content;
+  }
+}
+
+@mixin media-sm {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin media-xs {
+  @media (max-width: 580px) {
+    @content;
+  }
+}
+
+@mixin media-xxs {
+  @media (max-width: 362px) {
+    @content;
+  }
+}
+
+@mixin font-normal(
+  $fs: $font-size-normal,
+  $color: $text-color-main,
+  $lh: normal,
+  $fw: normal
+) {
+  font-family: 'Montserrat', 'Arial', sans-serif;
+  font-weight: $fw;
+  font-style: normal;
+  font-size: $fs;
+  line-height: $lh;
+  color: $color;
+}
+
+@mixin font-bold(
+  $fs: $font-size-big,
+  $color: $text-color-main,
+  $lh: normal,
+  $fw: bold
+) {
+  font-family: 'Montserrat', 'Arial', sans-serif;
+  font-weight: $fw;
+  font-style: normal;
+  font-size: $fs;
+  line-height: $lh;
+  color: $color;
+}
+
+@mixin font-icon(
+  $fs: inherit,
+  $color: inherit,
+  $lh: normal,
+  $fw: normal,
+  $ff: 'Material Icons'
+) {
+  display: inline-block;
+  font-family: $ff, sans-serif;
+  font-weight: $fw;
+  font-style: normal;
+  font-feature-settings: 'liga';
+  font-size: $fs;
+  line-height: $lh;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  direction: ltr;
+  color: $color;
+}
+
+@mixin font-face($font-family, $file-path, $weight: normal, $style: normal) {
+  @font-face {
+    src:
+      url('/assets/fonts/#{$file-path}.woff2') format('woff2'),
+      url('/assets/fonts/#{$file-path}.woff') format('woff');
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+  }
+}
+
+@mixin hover-not-touch {
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      @content;
+    }
+  }
+}

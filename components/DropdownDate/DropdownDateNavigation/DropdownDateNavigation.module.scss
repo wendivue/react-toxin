@@ -1,0 +1,26 @@
+@import '../../../styles/mixin';
+@import '../../../styles/variables';
+
+.navButton {
+  @include font-icon($fs: $font-size-big, $lh: 20px);
+
+  position: absolute;
+  top: 22px;
+  color: $purple;
+
+  &Back {
+    left: 20px;
+
+    @include media-xxs {
+      left: 18px;
+    }
+  }
+
+  &Forward {
+    right: 22px;
+  }
+
+  &:hover {
+    color: $transparent_black;
+  }
+}

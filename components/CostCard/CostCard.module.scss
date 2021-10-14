@@ -1,0 +1,193 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.costCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  padding: 40px 30px 30px;
+  width: 100%;
+  height: min-content;
+  max-width: 380px;
+  box-shadow: $box-shadow-light;
+  color: $text-color-main;
+  background-color: white;
+
+  @include media-xxs {
+    padding: 30px 15px;
+    width: 100%;
+    max-width: 355px;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.detail {
+  @include font-bold($font-size-normal, $lh: 24px);
+
+  display: inline-flex;
+  align-items: flex-end;
+}
+
+.room {
+  &Number {
+    @include font-bold;
+
+    margin-right: 1px;
+    margin-left: 3px;
+  }
+
+  &Category {
+    line-height: 22px;
+    color: $purple;
+  }
+}
+
+.price {
+  @include font-normal($font-size-small, $text-color-translucent, $lh: 20px);
+
+  display: flex;
+  align-self: flex-end;
+  text-align: right;
+
+  &Number {
+    @include font-bold($font-size-normal, $text-color-translucent);
+
+    margin-right: 2px;
+  }
+}
+
+.data {
+  display: flex;
+  flex-direction: column;
+  margin-top: 21px;
+  gap: 19px;
+}
+
+.dropdownDate {
+  position: relative;
+}
+
+.errorMessage {
+  @include font-normal($font-size-little, $error-text-color);
+
+  position: absolute;
+  top: 100%;
+  z-index: 2;
+  border: 1px solid $error-border-color;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: $error-background-color;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  vertical-align: middle;
+  margin-top: 20px;
+  gap: 14px;
+
+  &Item {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    :nth-child(1) {
+      position: relative;
+    }
+  }
+}
+
+.text {
+  position: relative;
+  max-width: 223px;
+  line-height: 1.46;
+}
+
+.result {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 13px;
+  font-weight: bold;
+  font-size: $font-size-medium;
+  line-height: 23px;
+
+  &Name {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    white-space: nowrap;
+
+    &::after {
+      content: '';
+      position: relative;
+      z-index: 1;
+      display: block;
+      border-bottom: 1px dashed $transparent_black;
+      width: 100%;
+      height: 14px;
+      box-sizing: border-box;
+    }
+  }
+}
+
+.totalPrice {
+  white-space: nowrap;
+}
+
+.icon {
+  @include font-bold($font-size-normal, $lh: 14px);
+
+  position: absolute;
+  right: 79px;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background-image: url('./img/icon.svg');
+  cursor: pointer;
+
+  &:hover::after {
+    @include font-normal(11px, white);
+
+    content: attr(data-text);
+    position: absolute;
+    left: 10px;
+    right: 0;
+    top: 50%;
+    z-index: 1;
+    border-radius: 10px;
+    padding: 5px 10px;
+    width: 100px;
+    background-position: center;
+    background-size: 20px;
+    background-color: $text-color-main;
+  }
+
+  @include media-xxs {
+    right: 40px;
+  }
+}
+
+.button {
+  margin-top: 22px;
+
+  :nth-child(1n) {
+    &:focus {
+      box-shadow: none;
+      text-shadow: none;
+    }
+  }
+}

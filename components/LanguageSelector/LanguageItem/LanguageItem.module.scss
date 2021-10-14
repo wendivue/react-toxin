@@ -1,0 +1,28 @@
+@import '@/styles/variables';
+
+.LanguageItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: white;
+  cursor: pointer;
+
+  &Flag {
+    display: flex;
+    align-items: center;
+  }
+
+  &Name {
+    margin-left: 20px;
+
+    &Active {
+      font-weight: bold;
+      color: $text-color-main;
+    }
+  }
+
+  &:hover {
+    background-color: $shadow-color;
+  }
+}

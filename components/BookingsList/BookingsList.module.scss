@@ -1,0 +1,74 @@
+@import 'styles/mixin';
+@import 'styles/variables';
+
+.bookingsList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1264px;
+
+  @include media-md {
+    justify-content: center;
+  }
+}
+
+.title {
+  @include font-bold($fs: $font-size-small, $lh: 15px);
+
+  margin: 0 120px 0 0;
+
+  @include media-md {
+    text-align: center;
+  }
+
+  @include media-lg {
+    margin: 0 0 60px;
+    width: 100%;
+  }
+}
+
+.confirmedBookings {
+  @include font-bold(
+    $fs: $font-size-normal,
+    $lh: 17px,
+    $color: $text-color-translucent
+  );
+
+  &Number {
+    @include font-bold($fs: $font-size-small, $lh: 15px);
+
+    margin-left: 20px;
+  }
+}
+
+.bookingsFilterSwitchElement {
+  margin-right: 60px;
+
+  @include media-md {
+    margin: 0;
+  }
+
+  @include media-xs {
+    margin: 0;
+    padding: 0 30px;
+    width: 100%;
+  }
+}
+
+.bookingItem {
+  margin-bottom: 20px;
+}
+
+.bookings {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  width: 100%;
+  gap: 24px;
+
+  @include media-md {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}

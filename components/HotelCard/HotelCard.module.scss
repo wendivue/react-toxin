@@ -1,0 +1,66 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.card {
+  width: 270px;
+  max-height: 257px;
+  box-shadow: 0 10px 20px $shadow-color;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.wrapperHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+  border-bottom: 1px solid $shadow-color;
+}
+
+.description {
+  border-radius: 0 0 4px 4px;
+  padding: 5px 18px 17px 20px;
+}
+
+.roomNumber {
+  @include font-bold($fs: 14px);
+
+  margin: 0;
+
+  &Big {
+    padding-left: 3px;
+    font-size: 20px;
+  }
+
+  &Lux {
+    padding-left: 1px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: $purple;
+  }
+}
+
+.text {
+  @include font-normal($fs: 12px, $color: $text-color-translucent);
+
+  &Bold {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  &Big {
+    font-size: 14px;
+  }
+}
+
+.wrapperReview {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.review {
+  margin: 4px 2px 0 0;
+}

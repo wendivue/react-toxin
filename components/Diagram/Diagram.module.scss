@@ -1,0 +1,140 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+
+  @include media-xs {
+    width: max-content;
+  }
+}
+
+.img {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 170px;
+
+  @include media-xxs {
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 280px;
+  }
+}
+
+.title {
+  @include font-bold($font-size-medium, $text-color-main, 23px);
+
+  margin: 0;
+  margin-left: 12px;
+
+  @include media-xs {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.unit {
+  z-index: 2;
+  stroke-width: 1;
+  transition: all 0.3s ease-in-out;
+  animation-name: render;
+  animation-duration: 1.5s;
+  cursor: pointer;
+}
+
+.hovered {
+  stroke-width: 4;
+}
+
+.legend {
+  @include font-normal($color: $text-color-secondary, $lh: 24px);
+
+  align-self: center;
+  list-style: none;
+  margin: 0 0 0 27px;
+  padding: 0;
+
+  &El {
+    position: relative;
+    cursor: pointer;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -15px;
+      top: 7px;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      background-color: $purple;
+    }
+
+    &:nth-child(1) {
+      &::before {
+        background: $yellow-gradient;
+      }
+    }
+
+    &:nth-child(2) {
+      &::before {
+        background: $green-gradient;
+      }
+    }
+
+    &:nth-child(3) {
+      &::before {
+        background: $purple-gradient;
+      }
+    }
+
+    &:nth-child(4) {
+      &::before {
+        background: $dark-gradient;
+      }
+    }
+
+    &:nth-child(5) {
+      &::before {
+        background: $red-gradient;
+      }
+    }
+  }
+}
+
+.chart {
+  &Number {
+    @include font-bold(6.6px, $lh: 29px);
+
+    text-anchor: middle;
+    transform: translateY(-2px);
+
+    &Hidden {
+      display: none;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &Hovered {
+      display: block;
+    }
+  }
+
+  &Label {
+    @include font-bold(3.4px, $lh: 19px);
+
+    text-transform: uppercase;
+    text-anchor: middle;
+    transform: translateY(5.5px);
+  }
+}
+
+@keyframes render {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}

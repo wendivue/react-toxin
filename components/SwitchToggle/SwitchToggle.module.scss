@@ -1,0 +1,68 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.title {
+  @include font-bold($font-size-small);
+
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.toggle {
+  @include font-normal($color: $text-color-translucent, $lh: 24px);
+
+  position: relative;
+  display: flex;
+  padding-left: 50px;
+  height: 100%;
+  text-transform: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.span {
+  vertical-align: middle;
+  transition: color 0.3s ease-in-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    border: 1px solid $transparent_black;
+    border-radius: 10px;
+    width: 40px;
+    height: 20px;
+    transition: border 0.3s ease-in-out;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    background: $transparent_black;
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+.input {
+  appearance: none;
+  position: absolute;
+
+  &:checked + .span::before {
+    border: 1px solid $purple;
+  }
+
+  &:checked + .span {
+    color: $text-color-secondary;
+  }
+
+  &:checked + .span::after {
+    left: 24px;
+    background: $purple-gradient;
+  }
+}

@@ -1,0 +1,28 @@
+.animation {
+  position: absolute;
+  top: 44px;
+  z-index: 10;
+  padding: 0;
+  width: 100%;
+  background-color: #fff;
+}
+
+.enter {
+  overflow: hidden;
+  opacity: 0.3;
+}
+
+.enterActive {
+  opacity: 1;
+  transition: height 0.33s ease-in-out, opacity 0.33s ease-in-out;
+}
+
+.exit {
+  overflow: hidden;
+  opacity: 1;
+}
+
+.exitActive {
+  opacity: 0.3;
+  transition: height 0.33s ease-in-out, opacity 0.33s ease-in-out;
+}

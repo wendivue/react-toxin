@@ -1,0 +1,41 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.reviews {
+  max-width: 712px;
+}
+
+.wrapperTitle {
+  display: flex;
+  justify-content: space-between;
+
+  @include media-sm {
+    flex-flow: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+}
+
+.title {
+  @include font-bold($fs: 19px);
+
+  margin: 0 0 21px;
+
+  @include media-sm {
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.totalText {
+  @include font-normal($color: $text-color-translucent);
+
+  margin: 4px 0 0;
+}
+
+.reviewList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 23px 0;
+}

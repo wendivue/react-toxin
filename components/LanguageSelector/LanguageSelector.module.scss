@@ -1,0 +1,33 @@
+@import '@/styles/variables';
+
+.LanguageSelector {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.Switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 1px solid $border-color;
+  padding: 0;
+  box-shadow: 1px 1px 5px $transparent_black;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.LanguagesPanel {
+  position: absolute;
+  top: calc(100% + 5px);
+  z-index: 2;
+  overflow: hidden;
+  border: 1px solid $shadow-color;
+  border-radius: 6px;
+  min-width: 100px;
+  min-height: 50px;
+  box-shadow: 3px 3px 25px $box-shadow-light;
+  box-sizing: border-box;
+  background-color: white;
+}

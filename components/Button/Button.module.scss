@@ -1,0 +1,122 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.button {
+  @include font-bold($fs: $font-size-small, $lh: 15px);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border-radius: 22px;
+  width: 100%;
+  text-transform: uppercase;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+
+  &Default {
+    border: none;
+    background-color: #fff;
+  }
+
+  &Filled {
+    border: solid 2px transparent;
+    background: $purple-gradient;
+    background-origin: border-box;
+
+    &:focus {
+      box-shadow: 1px 1px 5px 3px $purple;
+      text-shadow: none;
+    }
+  }
+
+  &Bordered {
+    border: solid 2px transparent;
+    background-image: linear-gradient(#fff, #fff), $purple-gradient;
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+
+    &:focus {
+      box-shadow: 1px 1px 5px 3px $purple;
+      text-shadow: none;
+    }
+  }
+
+  &White {
+    color: #fff;
+  }
+
+  &Purple {
+    color: $purple;
+  }
+
+  &Grey {
+    color: $text-color-translucent;
+  }
+
+  &Link {
+    text-decoration: none;
+  }
+
+  &Submit {
+    position: relative;
+
+    &::before {
+      @include font-icon($fs: $font-size-big, $lh: $font-size-big);
+
+      content: 'arrow_forward';
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      text-transform: none;
+      transform: translateY(-50%);
+      transition: right 0.3s ease-in-out;
+    }
+
+    @include hover-not-touch {
+      &::before {
+        right: 18px;
+      }
+    }
+  }
+
+  &Size {
+    &Medium {
+      padding-top: 12.8px;
+      padding-bottom: 12.8px;
+    }
+
+    &Small {
+      padding-top: 7.8px;
+      padding-bottom: 7.8px;
+    }
+
+    &Default {
+      padding: 0;
+    }
+  }
+
+  &:focus {
+    text-shadow: 1px 1px 5px $transparent_black;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    @include hover-not-touch {
+      &::before {
+        right: 8px;
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.notFound {
+  @include font-bold;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  min-height: 100vh;
+  gap: 30px;
+}
+
+.button {
+  width: 320px;
+}
+
+.img {
+  min-width: 320px;
+}

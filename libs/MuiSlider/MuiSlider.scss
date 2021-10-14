@@ -1,0 +1,42 @@
+@import '@/styles/variables';
+
+.MuiSlider-root.MuiSlider-colorPrimary {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 13px 0;
+  width: 266px;
+  color: transparent;
+
+  .MuiSlider-rail {
+    border: 1px solid $transparent_black;
+    border-radius: 3px;
+    height: 6px;
+    box-sizing: border-box;
+    opacity: 1;
+  }
+
+  .MuiSlider-thumb {
+    margin-top: 0;
+    border: 2px solid white;
+    width: 12px;
+    height: 12px;
+    box-sizing: content-box;
+    background: $green-gradient;
+
+    &::after {
+      display: none;
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      box-shadow: none;
+    }
+  }
+
+  .MuiSlider-track {
+    height: 6px;
+    background: $green-gradient;
+  }
+}

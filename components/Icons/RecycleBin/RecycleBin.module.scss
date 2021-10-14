@@ -1,0 +1,20 @@
+@import 'styles/variables';
+@import 'styles/mixin';
+
+.recycleBin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  &Image {
+    fill: $text-color-translucent;
+  }
+
+  @include hover-not-touch {
+    .recycleBinImage {
+      fill: url('#paint1_linear');
+    }
+  }
+}

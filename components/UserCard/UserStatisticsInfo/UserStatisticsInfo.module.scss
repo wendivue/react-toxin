@@ -1,0 +1,30 @@
+@import 'styles/mixin';
+@import 'styles/variables';
+
+.userStatisticsInfo {
+  width: 100%;
+  max-width: 300px;
+}
+
+.statisticsItemsList {
+  margin: 0;
+  padding: 0;
+}
+
+.statisticsTitle {
+  @include font-normal($lh: 17px);
+
+  margin: 0;
+}
+
+.statisticsItem {
+  @include font-normal($color: $text-color-translucent, $lh: 17px);
+
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+
+  &Value {
+    @include font-bold($fs: $font-size-small, $lh: 15px);
+  }
+}

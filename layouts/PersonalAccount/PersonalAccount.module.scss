@@ -1,0 +1,35 @@
+@import 'styles/mixin';
+
+.personalAccount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 68px 36px 68px 140px;
+
+  @include media-md {
+    padding: 70px 140px;
+  }
+
+  @include media-xs {
+    padding: 70px 25px;
+  }
+}
+
+.bookingListElement {
+  margin-top: 60px;
+}
+
+.logoutButtonContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1264px;
+
+  @include media-md {
+    justify-content: center;
+  }
+}
+
+.logoutButton {
+  margin-top: 70px;
+  width: 122px;
+}

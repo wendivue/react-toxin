@@ -1,0 +1,148 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+
+  &Extended {
+    width: 100%;
+  }
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid $transparent_black;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 10px 20px rgba(31, 32, 65, 0.05);
+  box-sizing: border-box;
+  transition: border 0.3s ease-in-out;
+}
+
+.text {
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  max-width: 95%;
+  white-space: nowrap;
+  text-align: start;
+  text-overflow: ellipsis;
+  color: $text-color-secondary;
+}
+
+.title {
+  @include font-bold($font-size-small, $lh: 14px);
+
+  margin: 0 0 5px;
+  text-transform: uppercase;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 4px;
+  width: 266px;
+  background-color: white;
+
+  &Extended {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 320px;
+    background-color: white;
+
+    &:hover,
+    &:focus {
+      .current,
+      .Items {
+        border-color: $text-color-translucent;
+      }
+    }
+  }
+
+  &Active {
+    box-shadow: 0 0 20px rgba(31, 32, 65, 0.05);
+    transition: border 0.3s ease-in-out;
+
+    .current {
+      border-radius: 4px 4px 0 0;
+    }
+
+    .icon {
+      margin: 0;
+      padding: 0;
+      transform: rotateX(180deg);
+    }
+  }
+
+  &:hover,
+  &:focus {
+    .current,
+    .items {
+      border-color: $text-color-translucent;
+    }
+  }
+
+  @include media-xxs {
+    width: 100%;
+  }
+}
+
+.current {
+  @include font-normal($lh: 40px);
+
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid $transparent_black;
+  border-radius: 4px;
+  padding: 0 14px;
+  width: 100%;
+  height: 44px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background-color: transparent;
+  transition: border 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.icon {
+  @include font-icon($font-size-big, $text-color-translucent, 24px);
+
+  position: absolute;
+  right: 9px;
+  top: 9px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  font-family: 'Material Icons Outlined', sans-serif;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.buttons {
+  display: flex;
+  flex-shrink: 1;
+  align-self: stretch;
+  justify-content: space-between;
+  padding: 0 6px 0 14px;
+}
+
+.buttonWrapper {
+  margin: 20px 0 12px;
+}

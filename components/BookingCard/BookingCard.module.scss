@@ -1,0 +1,95 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.booking {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  padding: 10px 10px 14px;
+  width: 100%;
+  min-height: 403px;
+  max-width: 290px;
+  box-shadow: $box-shadow-light;
+  background-color: white;
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover,
+  &:focus {
+    box-shadow: $box-shadow-purple;
+  }
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 19.5px;
+}
+
+.title {
+  @include font-bold($font-size-normal, $text-color-translucent);
+
+  margin-bottom: 5px;
+}
+
+.price {
+  @include font-bold($font-size-medium);
+
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+}
+
+.icon {
+  @include font-icon(40px);
+
+  position: relative;
+  color: transparent;
+  background-image: $red-gradient;
+  background-clip: text;
+  cursor: pointer;
+  user-select: none;
+
+  &Confirmed {
+    content: 'cancel';
+    background-image: $green-gradient;
+  }
+
+  &:hover {
+    .dropText {
+      z-index: 1;
+      opacity: 1;
+    }
+  }
+}
+
+.dropText {
+  @include font-normal($font-size-normal, white);
+
+  position: absolute;
+  right: 20%;
+  top: 120%;
+  z-index: -1;
+  border-radius: 7px;
+  padding: 6px 10px;
+  max-width: 154px;
+  box-shadow: $box-shadow-huge;
+  white-space: normal;
+  background-color: $red;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease-in-out;
+
+  &Confirmed {
+    background-color: $green;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 13px;
+  gap: 25px;
+}

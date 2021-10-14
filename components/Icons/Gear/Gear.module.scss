@@ -1,0 +1,20 @@
+@import 'styles/variables';
+@import 'styles/mixin';
+
+.gear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  &Image {
+    fill: $text-color-translucent;
+  }
+
+  @include hover-not-touch {
+    .gearImage {
+      fill: url('#paint0_linear');
+    }
+  }
+}

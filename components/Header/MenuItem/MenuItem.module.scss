@@ -1,0 +1,91 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.item {
+  justify-content: center;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &WithList {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &Active {
+    font-weight: bold;
+    color: $text-color-secondary;
+  }
+
+  @include media-lg {
+    position: relative;
+    align-self: center;
+    text-align: center;
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.drop {
+  @include font-normal($font-size-normal, $text-color-translucent);
+
+  position: absolute;
+  top: 25px;
+  z-index: 3;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  border: 1px solid $shadow-color;
+  border-radius: 6px;
+  padding: 0;
+  min-width: 100px;
+  background-color: white;
+  transition: all ease-in-out;
+  gap: 2px;
+
+  &Active {
+    display: block;
+    transition: all 3 ease-in-out;
+  }
+
+  &Item {
+    padding: 7px 30px;
+    white-space: normal;
+    text-align: center;
+
+    &:hover {
+      background-color: $hover-menu-item-color;
+    }
+  }
+
+  &Link {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.icon {
+  @include font-icon($font-size-big);
+
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+
+  &Active {
+    transform: rotateX(180deg);
+  }
+}

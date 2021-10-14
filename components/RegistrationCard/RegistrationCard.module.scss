@@ -1,0 +1,82 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.wrapper {
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  padding: 40px 30px 30px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: $box-shadow-light;
+  box-sizing: border-box;
+  background-color: #fff;
+
+  @include media-xxs {
+    padding: 40px 20px 30px;
+  }
+}
+
+.title {
+  margin: 0 0 20px;
+  font-size: $font-size-big;
+  line-height: 29px;
+  color: $text-color-main;
+}
+
+.form {
+  margin-bottom: 30px;
+}
+
+.description {
+  @include font-bold($fs: $font-size-small, $lh: 15px);
+
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.text {
+  line-height: 18px;
+  color: black;
+}
+
+.textField {
+  &Name {
+    margin-bottom: 10px;
+  }
+
+  &Surname {
+    margin-bottom: 10px;
+  }
+
+  &Birthday {
+    margin-bottom: 20px;
+  }
+
+  &Email {
+    margin-bottom: 10px;
+  }
+
+  &Password {
+    margin-bottom: 8px;
+  }
+}
+
+.radioWrapper {
+  margin-bottom: 28px;
+}
+
+.toggleWrapper {
+  margin-bottom: 22px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  > :nth-child(2) {
+    margin-left: 5px;
+    max-width: 99px;
+  }
+}

@@ -1,0 +1,115 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  width: 100vw;
+  height: 100vh;
+  background-color: $popup-background-color;
+}
+
+.popUp {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 30px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: $box-shadow-light;
+  background-color: white;
+  transform: translate(-50%, -50%);
+}
+
+.room {
+  @include font-bold($font-size-normal);
+}
+
+.numberRoom {
+  font-size: $font-size-big;
+}
+
+.typeRoom {
+  margin-left: 3px;
+  color: $purple;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+  gap: 16px;
+}
+
+.additionalServices {
+  display: flex;
+  flex-direction: column;
+}
+
+.info {
+  @include font-normal;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.descriptionList {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 15px;
+  width: 100%;
+}
+
+.services {
+  @include font-normal($color: $text-color-translucent);
+
+  margin-top: 8px;
+  width: 100%;
+
+  &Description {
+    margin-right: 20px;
+  }
+}
+
+.result {
+  @include font-bold($font-size-medium);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 31px;
+  margin-bottom: 30px;
+
+  &Name {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+
+    &::after {
+      content: '';
+      position: relative;
+      z-index: 1;
+      display: block;
+      border-bottom: 1px dashed $transparent_black;
+      width: 100%;
+      height: 14px;
+      box-sizing: border-box;
+    }
+  }
+}
+
+.totalPrice {
+  display: flex;
+  align-items: flex-end;
+  line-height: 1;
+  white-space: nowrap;
+}

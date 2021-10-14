@@ -1,0 +1,41 @@
+@import 'styles/variables';
+@import 'styles/mixin';
+
+.bookingsFilterSwitch {
+  display: flex;
+  box-shadow: 0 4px 25px 0 $border-color;
+
+  @include media-xs {
+    flex-direction: column;
+  }
+}
+
+.button {
+  @include font-bold(
+    $fs: $font-size-small,
+    $lh: 14px,
+    $color: $text-color-secondary
+  );
+
+  outline: none;
+  border: 1px solid #fff;
+  padding: 6px 22px;
+  background-color: #fff;
+  cursor: pointer;
+
+  &Active {
+    border-color: $shadow-color;
+    color: $purple;
+    background-color: $transparent-black-background;
+  }
+
+  &:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  &:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+}

@@ -1,0 +1,100 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.inputWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 320px;
+
+  &Double {
+    > :nth-child(1) {
+      margin-right: 20px;
+    }
+  }
+}
+
+.label {
+  @include font-bold($fs: $font-size-small, $lh: 15px);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-transform: uppercase;
+
+  &::before {
+    @include font-icon;
+
+    content: 'expand_more';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    min-height: 42px;
+    font-size: 24px;
+    line-height: 24px;
+    text-transform: none;
+    color: $text-color-translucent;
+    cursor: pointer;
+  }
+}
+
+.dateInput {
+  @include font-normal($lh: $font-size-big);
+
+  margin-top: 5px;
+  border: 1px solid $transparent_black;
+  border-radius: 4px;
+  padding: 8px 15px 10px;
+  width: 100%;
+  color: $text-color-secondary;
+  background-color: #fff;
+  transition: border 0.3s ease-in-out;
+  cursor: pointer;
+
+  &Small {
+    width: 100%;
+    max-width: 150px;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid $text-color-translucent;
+    color: $text-color-secondary;
+
+    &::placeholder {
+      color: $text-color-secondary;
+    }
+  }
+
+  &:hover {
+    border: 1px solid $text-color-translucent;
+
+    &::placeholder {
+      color: $text-color-secondary;
+    }
+  }
+}
+
+@include media-xs {
+  .inputWrapper {
+    flex-wrap: wrap;
+
+    &Double {
+      > :first-child {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .dateInputSmall {
+    width: 100%;
+    max-width: none;
+  }
+}

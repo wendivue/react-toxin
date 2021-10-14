@@ -1,0 +1,11 @@
+@import 'styles/variables';
+@import 'styles/mixin';
+
+.pencil {
+  fill: $transparent_black;
+  transition: fill 150ms ease-in-out;
+
+  @include hover-not-touch {
+    fill: $purple;
+  }
+}

@@ -1,0 +1,156 @@
+@import '@/styles/variables.scss';
+@import '@/styles/mixin.scss';
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  box-shadow: $box-shadow-bold;
+  background-color: #fff;
+}
+
+.mainWrapper {
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: 22.414% 13.794% 13.794% 13.794% 22.414%;
+  margin: 100px auto 97px;
+  padding: 0 40px;
+  max-width: 1240px;
+
+  @include media-md {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+    margin: 30px auto;
+    width: 100%;
+  }
+}
+
+.logoBlock {
+  @include media-md {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
+}
+
+.logoWrapper {
+  @include media-md {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+.mainLink {
+  display: flex;
+  margin-bottom: 17px;
+
+  &:focus {
+    opacity: 0.7;
+  }
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      opacity: 0.7;
+    }
+  }
+}
+
+.icon {
+  width: 106px;
+  height: 40px;
+}
+
+.logoDescription {
+  margin: 0;
+  line-height: 1.72;
+
+  @include media-md {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.navBlock {
+  padding-top: 4px;
+
+  @include media-md {
+    &:not(:last-child) {
+      margin-bottom: 40px;
+    }
+  }
+}
+
+.blockTitle {
+  @include font-bold($font-size-small);
+
+  margin: 0 0 20px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: #1f2041;
+}
+
+.subscribeDescription {
+  margin: 0 0 24px;
+  line-height: 1.7;
+}
+
+.subWrapperLayout {
+  border-top: 1px solid $shadow-color;
+}
+
+.subWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 0 40px;
+  min-height: 70px;
+  max-width: 1240px;
+
+  @include media-xs {
+    flex-direction: column;
+    margin: 20px auto;
+  }
+}
+
+.copyright {
+  margin: 0;
+  text-align: center;
+}
+
+// Tablet
+
+.footerTablet {
+  margin: 0 auto;
+  max-width: 768px;
+
+  .mainWrapper {
+    grid-template-columns: 1fr;
+    margin: 120px 104px 0;
+    width: auto;
+  }
+
+  .logoWrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .mainLink {
+    margin-bottom: 21px;
+  }
+
+  .subWrapperLayout {
+    margin-bottom: 118px;
+    border: none;
+  }
+
+  .subWrapper {
+    flex-direction: column;
+    width: auto;
+    min-height: auto;
+  }
+
+  .copyright {
+    margin-bottom: 27px;
+  }
+}

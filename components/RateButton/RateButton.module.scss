@@ -1,0 +1,25 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  list-style: none;
+}
+
+.icon {
+  @include font-icon($fs: 24px);
+
+  margin: 0;
+  border: none;
+  padding: 0;
+  line-height: 1;
+  -webkit-text-fill-color: transparent;
+  background-image: $purple-gradient;
+  background-clip: text;
+  cursor: pointer;
+}

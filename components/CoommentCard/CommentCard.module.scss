@@ -1,0 +1,78 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 712px;
+  gap: 15px;
+}
+
+.label {
+  @include font-normal($font-size-normal, $text-color-translucent);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.text {
+  cursor: pointer;
+}
+
+.textarea {
+  overflow: hidden;
+  margin-top: 22px;
+  border: 1px solid $transparent_black;
+  border-radius: 4px;
+  padding: 8px 15px;
+  width: 100%;
+  height: auto;
+  min-height: 77px;
+  max-width: 720px;
+  line-height: 1.5;
+  white-space: pre-line;
+  color: $text-color-secondary;
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
+  resize: none;
+
+  &::placeholder {
+    color: $transparent_black;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid $text-color-translucent;
+    color: $text-color-secondary;
+
+    &::placeholder {
+      color: $transparent_black;
+    }
+  }
+
+  @include hover-not-touch {
+    border-color: $text-color-translucent;
+  }
+}
+
+.submit {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+
+.button {
+  width: 100%;
+  max-width: 220px;
+}
+
+.circle {
+  align-self: flex-end;
+  justify-self: flex-end;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+}

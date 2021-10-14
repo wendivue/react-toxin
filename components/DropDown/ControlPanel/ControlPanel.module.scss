@@ -1,0 +1,62 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.controlPanel {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2px;
+}
+
+.item {
+  @include font-bold($font-size-small, $lh: 30px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 7px;
+  padding: 0 6px 0 14px;
+  height: 30px;
+  box-sizing: border-box;
+  text-transform: uppercase;
+
+  &Span {
+    vertical-align: middle;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 30px;
+    max-width: 80%;
+    white-space: nowrap;
+    text-align: start;
+    text-overflow: ellipsis;
+  }
+
+  &:last-of-type {
+    margin-bottom: 5px;
+  }
+}
+
+.span {
+  vertical-align: middle;
+  width: 32px;
+  height: 30px;
+  text-align: center;
+}
+
+.button {
+  @include font-normal(18px, $lh: 22px);
+
+  border: 1px solid $text-color-translucent;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  background-color: transparent;
+  cursor: pointer;
+  user-select: none;
+
+  &Disabled {
+    opacity: 0.38;
+    cursor: auto;
+  }
+}

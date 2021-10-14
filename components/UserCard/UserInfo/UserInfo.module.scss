@@ -1,0 +1,49 @@
+@import 'styles/variables';
+@import 'styles/mixin';
+
+.userInfo {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 12px 22px;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(2, 24px);
+
+  @include media-xs {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.item {
+  &Title {
+    @include font-bold($fs: $font-size-normal, $lh: 17px);
+
+    margin: 0;
+  }
+
+  &Value {
+    @include font-normal($fs: 19px, $color: $text-color-secondary, $lh: 23px);
+
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #fff;
+
+    &:not(&:read-only) {
+      &:focus {
+        border-color: $border-color;
+      }
+    }
+
+    @include media-xs {
+      text-align: center;
+    }
+  }
+
+  &PencilButton {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+  }
+}

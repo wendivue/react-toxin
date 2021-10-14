@@ -1,0 +1,46 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.auth {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  padding: 40px 30px 30px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: $box-shadow-light;
+  color: $text-color-main;
+  background-color: white;
+
+  @include media-xxs {
+    padding: 30px 20px;
+  }
+}
+
+.form {
+  margin-bottom: 30px;
+}
+
+.title {
+  @include font-bold;
+
+  margin-bottom: 20px;
+}
+
+.field {
+  margin-bottom: 10px;
+}
+
+.submit {
+  margin-top: 20px;
+}
+
+.bot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  margin-left: 5px;
+  width: 98px;
+}

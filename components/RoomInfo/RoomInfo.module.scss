@@ -1,0 +1,138 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+@keyframes popup {
+  0% {
+    box-shadow: none;
+    opacity: 0;
+  }
+
+  75% {
+    opacity: 1;
+  }
+}
+
+.roomInfo {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+
+  @include media-xs {
+    max-width: max-content;
+  }
+}
+
+.title {
+  @include font-bold($fs: 19px, $lh: 24px);
+
+  margin: 0;
+
+  @include media-xs {
+    text-align: center;
+  }
+}
+
+.itemsList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.icon {
+  @include font-icon($fs: $font-size-huge, $lh: 41px);
+
+  align-self: center;
+  margin-right: 10px;
+  max-width: $font-size-huge;
+  color: transparent;
+  background: $purple-gradient;
+  background-clip: text;
+  user-select: none;
+
+  &Small {
+    margin: 0;
+    max-width: 24px;
+    font-size: $font-size-big;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+
+.itemPopup {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  user-select: none;
+}
+
+.popup {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 2;
+  display: none;
+  overflow: hidden;
+  border: 1px solid $purple;
+  border-radius: 4px;
+  width: 280px;
+  box-shadow: $box-shadow-purple;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+  animation-name: popup;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+}
+
+.infoPopup {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 17px;
+}
+
+.itemIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0;
+  margin-top: 20px;
+  width: 34px;
+  height: 34px;
+  user-select: none;
+
+  &:hover,
+  &:focus {
+    + .popup {
+      display: block;
+    }
+  }
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.iconTitle {
+  @include font-bold($fs: $font-size-normal, $lh: $font-size-big);
+
+  color: $text-color-secondary;
+}
+
+.description {
+  font-size: $font-size-normal;
+}
+
+.line {
+  margin-top: 20px;
+  border-top: 1px solid $shadow-color;
+}

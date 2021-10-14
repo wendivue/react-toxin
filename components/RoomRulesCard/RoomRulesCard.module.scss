@@ -1,0 +1,54 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.container {
+  width: 100%;
+  max-width: 290px;
+
+  @include media-xs {
+    margin-bottom: 20px;
+    max-width: none;
+  }
+}
+
+.title {
+  @include font-bold($fs: 19px, $lh: 24px);
+
+  margin: 0;
+  margin-bottom: 16px;
+  margin-left: 20px;
+
+  @include media-xs {
+    margin-left: 0;
+    text-align: center;
+  }
+}
+
+.rulesList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  width: 90%;
+  color: $text-color-secondary;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    margin-top: 7px;
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: $transparent_black;
+  }
+}

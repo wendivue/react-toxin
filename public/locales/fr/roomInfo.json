@@ -1,0 +1,104 @@
+{
+  "noiseAbsorbingWalls": {
+    "title": "Confort",
+    "description": "Murs insonorisants"
+  },
+  "windowsInBedrooms": {
+    "title": "Commodité",
+    "description": "Fenêtre dans chacune des chambres"
+  },
+  "fireplace": {
+    "title": "Confort",
+    "description": "Cette chambre est équipée d'une cheminée"
+  },
+  "fridge": {
+    "title": "Boissons froides",
+    "description": "Cette chambre est équipée d'un réfrigérateur avec minibar"
+  },
+  "table": {
+    "title": "Cabinet",
+    "description": "Cette chambre dispose d'un bureau séparé avec un bureau pour un travail confortable "
+  },
+  "iron": {
+    "title": "Équipements pour les clients",
+    "description": "Nettoyage à sec est inclus dans le tarif de la chambre"
+  },
+  "television": {
+    "title": "Beau loisir",
+    "description": "Cette chambre dispose d'une télévision avec de nombreuses chaînes disponibles"
+  },
+  "balcony": {
+    "title": "Belle vue",
+    "description": "L'une des chambres dispose d'un balcon"
+  },
+  "fan": {
+    "title": "Contrôle de la température",
+    "description": "Cette chambre est climatisée"
+  },
+  "gym": {
+    "title": "Sport",
+    "description": "Une des chambres de la chambre est équipée d'équipements sportifs"
+  },
+  "rockingChair": {
+    "title": "Confort",
+    "description": "Cette chambre dispose d'un fauteuil à bascule"
+  },
+  "jacuzzi": {
+    "title": "Détente",
+    "description": "Cette chambre dispose d'un jacuzzi"
+  },
+  "feedingChair": {
+    "title": "Soins aux enfants",
+    "description": "Cette chambre est équipée d'une chaise d'alimentation"
+  },
+  "cot": {
+    "title": "Équipements pour enfants",
+    "description": "Cette chambre dispose d'un lit bébé"
+  },
+  "shampoo": {
+    "title": "Le repos confortable",
+    "description": "Produits de beauté (shampoings, gels douche)inclus dans le prix"
+  },
+  "breakfast": {
+    "title": "Petit déjeuner",
+    "description": "Le petit déjeuner gratuit est inclus dans le tarif de la chambre"
+  },
+  "informationRoom": "Détails de la chambre",
+  "guestReviews": "Avis des visiteurs de la chambre",
+  "impressionsOfTheRoom": "Impressions de la chambre",
+  "cancel": "Annuler",
+  "rules": "Règles",
+  "rulesList": {
+    "smoke": {
+      "true": "Il est possible de fumer dans la chambre",
+      "false": "Impossible d'acheter"
+    },
+    "pets": {
+      "true": "Possible avec les animaux de compagnie",
+      "false": "Impossible avec les animaux de compagnie"
+    },
+    "guests": {
+      "true": "Peut accueillir jusqu'à 10 personnes",
+      "false": "Impossible d'inviter des invités"
+    },
+    "isArrivalTimeLimited": {
+      "true": "L'heure d'arrivée est après 13h00 et le départ avant 12h00",
+      "false": "Toutes les heures d'arrivée et de départ"
+    },
+    "parties": {
+      "true": "Vous pouvez organiser des fêtes et des événements",
+      "false": "Pas de fêtes ni d'événements"
+    }
+  },
+  "freeCancellation": "Annulation gratuite dans un délai de 48 heures. avant votre arrivée, vous recevrez un remboursement complet moins les frais de service.",
+  "reviewDate": "il y a un jour",
+  "reviewDate_plural": "{{date}} il y a jours",
+  "reviewDate_weeks": "il y a une semaine",
+  "reviewDate_weeks_plural": "{{date}} il y a quelques semaines",
+  "reviewDate_month": "il y a un mois",
+  "reviewDate_month_plural": "{{date}} il y a un mois",
+  "leaveReview": "Laisser un avis",
+  "postReview": "Publier un avis",
+  "changeReview": "modifier la révision",
+  "comment": "Commentaire"
+}

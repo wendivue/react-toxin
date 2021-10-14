@@ -1,0 +1,10 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.circleDefault {
+  stroke: $border-color;
+}
+
+.text {
+  @include font-bold($font-size-normal);
+}

@@ -1,0 +1,45 @@
+@import '@/styles/variables';
+@import '@/styles/mixin';
+
+.wrapper {
+  position: relative;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  padding: 34px 30px 25px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: $box-shadow-light;
+  box-sizing: border-box;
+  background-color: #fff;
+
+  @include media-xxs {
+    padding: 40px 20px 30px;
+  }
+}
+
+.title {
+  margin: 0;
+  margin-bottom: 20px;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  color: $text-color-main;
+}
+
+.form {
+  > :nth-child(1) {
+    margin-bottom: 20px;
+  }
+
+  > :nth-child(2) {
+    margin-bottom: 20px;
+  }
+}
+
+.description {
+  @include font-bold($fs: $font-size-small, $lh: 15px);
+
+  margin: 0;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}

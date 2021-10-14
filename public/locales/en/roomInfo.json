@@ -1,0 +1,104 @@
+{
+  "noiseAbsorbingWalls": {
+    "title": "Comfort",
+    "description": "Noise-absorbing walls"
+  },
+  "windowsInBedrooms": {
+    "title": "Convenience",
+    "description": "Window in each of the bedrooms"
+  },
+  "fireplace": {
+    "title": "Comfort",
+    "description": "The room is equipped with a fireplace"
+  },
+  "fridge": {
+    "title": "Cold drinks",
+    "description": "The room is equipped with a refrigerator with a mini-bar"
+  },
+  "table": {
+    "title": "Office",
+    "description": "The room has a separate office with a desk for comfortable work "
+  },
+  "iron": {
+    "title": "Amenities for guests",
+    "description": "Dry cleaning is included in the room price"
+  },
+  "television": {
+    "title": "Pleasant leisure",
+    "description": "The room has a TV with a large number of available channels"
+  },
+  "balcony": {
+    "title": "Beautiful view",
+    "description": " There is a balcony in one of the rooms of the room"
+  },
+  "fan": {
+    "title": "Temperature control",
+    "description": "The room has air conditioning"
+  },
+  "gym": {
+    "title": "Sports",
+    "description": "One of the rooms of the room is equipped with sports equipment"
+  },
+  "rockingChair": {
+    "title": "Comfortable environment",
+    "description": " There is a rocking chair in the room"
+  },
+  "jacuzzi": {
+    "title": "Relaxation",
+    "description": "The room has a Jacuzzi"
+  },
+  "feedingChair": {
+    "title": "Taking care of children",
+    "description": "The room is equipped with a feeding chair"
+  },
+  "cot": {
+    "title": "Facilities for children",
+    "description": "There is a cot in the room"
+  },
+  "shampoo": {
+    "title": "Comfortable stay",
+    "description": "The room price includes cosmetics (shampoos, shower gels)"
+  },
+  "breakfast": {
+    "title": "Breakfast",
+    "description": " Free breakfast is included in the room rate"
+  },
+  "informationRoom": "Information about the room",
+  "guestReviews": "Guest reviews of the room",
+  "impressionsOfTheRoom": "Impressions of the room",
+  "cancel": "Cancel",
+  "rules": "Rules",
+  "rulesList": {
+    "smoke": {
+      "true": "You can smoke in the room",
+      "false": "You can't buy"
+    },
+    "pets": {
+      "true": "Allowed with pets",
+      "false": "Not allowed with pets"
+    },
+    "guests": {
+      "true": "You can invite guests (up to 10 people)",
+      "false": "You can't invite guests"
+    },
+    "isArrivalTimeLimited": {
+      "true": "Arrival time is after 13: 00, and departure before 12: 00",
+      "false": "Any time of arrival and departure"
+    },
+    "parties": {
+      "true": "You can organize parties and events",
+      "false": "No parties and events"
+    }
+  },
+  "freeCancellation": "Free cancellation within 48 hours. After that, if canceled no later than 5 days in advance. before arrival, you will receive a full refund minus the service fee.",
+  "reviewDate": "a day ago",
+  "reviewDate_plural": "{{date}} days ago",
+  "reviewDate_weeks": "a week ago",
+  "reviewDate_weeks_plural": "{{date}} weeks ago",
+  "reviewDate_month": "a month ago",
+  "reviewDate_month_plural": "{{date}} months ago",
+  "leaveReview": "Leave a review",
+  "postReview": "Post a review",
+  "changeReview": "change review",
+  "comment": "Comment"
+}

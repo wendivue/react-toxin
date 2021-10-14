@@ -1,0 +1,63 @@
+@import '@/styles/mixin';
+@import '@/styles/variables';
+
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: calc(100vh - 70px);
+  min-height: 500px;
+  background: url('/assets/img/room.jpg') no-repeat center;
+  background-size: cover;
+  background-color: $box-shadow-bold;
+
+  @include media-md {
+    height: 100%;
+  }
+}
+
+.content {
+  @include font-normal($font-size-normal, $text-color-secondary);
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  float: left;
+  margin: 70px 0 22px;
+  padding: 0 135px 0 140px;
+  width: 100%;
+  min-height: 500px;
+  max-width: 1920px;
+
+  @include media-lg {
+    justify-content: center;
+    padding: 0 70px;
+  }
+
+  @include media-sm {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  @include media-xs {
+    padding: 0;
+  }
+}
+
+.form {
+  align-self: flex-start;
+}
+
+.caption {
+  align-self: flex-end;
+  width: 297px;
+  line-height: 1.7;
+  text-align: right;
+
+  @include media-md {
+    text-align: center;
+  }
+}
