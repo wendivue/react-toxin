@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import styles from './Like.module.scss';
 import { LikeProps } from './type';
@@ -22,6 +22,10 @@ const Like: FC<LikeProps> = ({
     if (onChange && id) onChange([id, !isLikeActive]);
   };
 
+  useEffect(() => {
+    setIsLikeActive(isActive);
+  }, [isActive]);
+
   return (
     <label className={styles.label}>
       <input
@@ -30,6 +34,7 @@ const Like: FC<LikeProps> = ({
         name="like"
         disabled={disabled}
         onChange={handleClickLike}
+        checked={isLikeActive}
       />
       <span className={styles.number}>{likeCount}</span>
     </label>

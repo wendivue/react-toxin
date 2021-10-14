@@ -1,31 +1,34 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'next-i18next';
 import clsx from 'clsx';
-import { observer } from 'mobx-react-lite';
 
-import { useStore } from '@/libs/hooks/useStore';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
 import { Button } from '@/Button';
 import { HotelCard } from '@/HotelCard';
 import { HotelItemProps } from '@/HotelCard/types';
 import { LoadingPopup } from '@/LoadingPopup';
-import { Room } from 'storeMobX/rooms/roomsTypes';
+import { bookingDelete, bookingFetch } from 'store/booking/bookingActions';
+import { Booking } from 'store/booking/bookingTypes';
+import { Room } from 'store/rooms/roomsTypes';
+
+import styles from './BookingCard.module.scss';
 import { PopUp } from './PopUp';
 import { BookingProps } from './types';
 import { dateFromJSON } from '../../helpers/timestampJSONFormatter';
-import styles from './BookingCard.module.scss';
 
-const BookingCard: FC<BookingProps> = observer(({ bookingId }) => {
+const BookingCard: FC<BookingProps> = ({ bookingId }) => {
   const { t } = useTranslation(['booking']);
 
   const [isShowDetails, setIsShowDetails] = useState(false);
+  const dispatch = useDispatch();
 
-  const {
-    authStore: { user },
-    bookingStore: { bookings, fetchBookings, deleteBooking },
-  } = useStore();
-
-  const userBooking = bookings?.[bookingId];
-
+  const userBooking: Partial<Booking> | undefined = useTypedSelector(
+    (state) => state.booking.bookings?.[bookingId],
+  );
+  const userAuth = useTypedSelector((state) => {
+    return state.auth.user;
+  });
   const {
     roomId,
     dates,
@@ -63,15 +66,12 @@ const BookingCard: FC<BookingProps> = observer(({ bookingId }) => {
   };
 
   const handleDeleteBooking = (): void => {
-    if (roomId) {
-      deleteBooking({ bookingId, roomId });
-    }
+    dispatch(bookingDelete([bookingId, String(roomId)]));
   };
 
   useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings, user]);
-
+    dispatch(bookingFetch());
+  }, [dispatch, userAuth]);
   return (
     <>
       <div className={styles.booking}>
@@ -136,6 +136,5 @@ const BookingCard: FC<BookingProps> = observer(({ bookingId }) => {
       )}
     </>
   );
-});
-
+};
 export { BookingCard };

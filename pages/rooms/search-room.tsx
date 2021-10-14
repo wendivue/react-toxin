@@ -1,9 +1,12 @@
 import React from 'react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { END } from 'redux-saga';
 
-import { Main } from 'layouts/Main';
 import { SearchCard } from '@/SearchCard';
+import { Main } from 'layouts/Main';
+import { SagaStore, wrapper } from 'store';
+import { roomsFetchFiltered, roomsSetFilter } from 'store/rooms/roomsActions';
 
 export default function SearchRoom(): React.ReactElement {
   return (
@@ -19,15 +22,25 @@ export default function SearchRoom(): React.ReactElement {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale || 'en', [
-        'common',
-        'navigation',
-        'footer',
-        'filter',
-      ])),
-    },
-  };
-};
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps((store) => async ({ query, locale }) => {
+    if ((store as SagaStore).sagaTask) {
+      store.dispatch(
+        roomsSetFilter(JSON.parse((query.filter as string) || '{}')),
+      );
+      store.dispatch(roomsFetchFiltered());
+      store.dispatch(END);
+      await (store as SagaStore).sagaTask?.toPromise();
+    }
+
+    return {
+      props: {
+        ...(await serverSideTranslations(locale || 'en', [
+          'common',
+          'navigation',
+          'footer',
+          'filter',
+        ])),
+      },
+    };
+  });

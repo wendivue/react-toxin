@@ -1,4 +1,4 @@
-import { Timestamp as Time } from '@/libs/Firebase/types';
+import { Timestamp as Time } from '@/libs/Firebase/Firebase';
 import firebase from 'firebase/app';
 
 const { Timestamp } = firebase.firestore;

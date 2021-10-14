@@ -1,4 +1,4 @@
-import { UseValidationValues } from '@/libs/hooks/useValidation/types';
+import { UseValidationValues } from '../useValidation/types';
 
 type UseInputValue = UseValidationValues & {
   value: string;

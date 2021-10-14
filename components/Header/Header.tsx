@@ -1,31 +1,31 @@
 /* eslint-disable no-nested-ternary */
 import React, { FC } from 'react';
-import { observer } from 'mobx-react-lite';
 
 import { Menu } from '@/Header/Menu';
 import { Logo } from '@/Logo';
-import { useStore } from '@/libs/hooks/useStore';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
 
 import type { HeaderProps } from './types';
 import styles from './Header.module.scss';
 
-const Header: FC<HeaderProps> = observer(({ logo, items }) => {
-  const {
-    authStore: { user, isUserLoading },
-  } = useStore();
+const Header: FC<HeaderProps> = ({ logo, items }) => {
+  const authUserState = useTypedSelector((state) => state.auth.user);
+  const authIsLoadingState = useTypedSelector(
+    (state) => state.auth.isUserLoading,
+  );
 
   return (
     <div className={styles.header}>
       <div className={styles.nav}>
         <Logo src={logo.src} alt={logo.alt} />
-        {isUserLoading ? (
+        {authIsLoadingState ? (
           <Menu items={items} />
-        ) : user ? (
+        ) : authUserState ? (
           <Menu
             items={items}
             auth={{
               // eslint-disable-next-line max-len
-              text: `${user.userInfo.name} ${user.userInfo.surname}`,
+              text: `${authUserState.userInfo.name} ${authUserState.userInfo.surname}`,
               href: '/personal-account',
             }}
           />
@@ -35,6 +35,6 @@ const Header: FC<HeaderProps> = observer(({ logo, items }) => {
       </div>
     </div>
   );
-});
+};
 
 export { Header };

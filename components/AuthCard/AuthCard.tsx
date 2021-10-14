@@ -1,34 +1,39 @@
 import React, { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
 
 import { Button } from '@/Button';
 import { FormErrors } from '@/FormError';
 import { useInput } from '@/libs/hooks/useInput/useInput';
 import { TextField } from '@/TextField';
-import { useStore } from '@/libs/hooks/useStore';
 
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
+import { authSigninRequest } from 'store/auth/authActions';
+import { AuthError } from 'store/auth/authTypes';
 import styles from './AuthCard.module.scss';
 
-const AuthCard: FC = observer(() => {
+const AuthCard: FC = () => {
   const { t } = useTranslation(['auth', 'common']);
-  const {
-    authStore: { user, userError, isUserLoading, signinRequest },
-  } = useStore();
-  const router = useRouter();
 
-  if (user && !userError) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const store = useTypedSelector((state) => state.auth);
+  const isFetching = useTypedSelector((state) => state.auth.isUserLoading);
+  const authError: AuthError | null = useTypedSelector(
+    (state) => state.auth.userError,
+  );
+  if (store.user && !authError) {
     router.push('/');
   }
   const email = useInput('', { isEmail: true, isEmpty: true });
   const [password, setPassword] = useState('');
   const isSubmitDisabled =
-    !email.isInputValid || isUserLoading || password.length === 0;
+    !email.isInputValid || isFetching || password.length === 0;
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    signinRequest({ email: email.value, password });
+    dispatch(authSigninRequest({ email: email.value, password }));
   };
 
   const handlePasswordChange = (
@@ -69,7 +74,7 @@ const AuthCard: FC = observer(() => {
             inputValue={password}
             onChange={handlePasswordChange}
           />
-          {userError && (
+          {authError && (
             <FormErrors
               formError={{
                 auth: {
@@ -103,6 +108,6 @@ const AuthCard: FC = observer(() => {
       </div>
     </div>
   );
-});
+};
 
 export { AuthCard };

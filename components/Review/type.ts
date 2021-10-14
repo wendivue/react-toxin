@@ -1,4 +1,4 @@
-import { Timestamp } from '@/libs/Firebase/types';
+import { Timestamp } from '@/libs/Firebase/Firebase';
 
 type ReviewProps = {
   name: string;
@@ -9,7 +9,7 @@ type ReviewProps = {
   id: number | string;
   userId?: string | number;
   isControl?: boolean;
-  roomId?: string;
+  roomId: string;
 };
 
 export type { ReviewProps };
