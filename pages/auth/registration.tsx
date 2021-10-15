@@ -1,9 +1,10 @@
 import React from 'react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Main } from 'layouts/Main';
 import { AuthPage } from 'layouts/AuthPage';
+import { wrapper } from '../../store';
 
 export default function RegistrationPage(): React.ReactElement {
   return (
@@ -19,15 +20,16 @@ export default function RegistrationPage(): React.ReactElement {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale || 'en', [
-        'common',
-        'navigation',
-        'footer',
-        'auth',
-      ])),
-    },
-  };
-};
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps(() => async ({ locale }) => {
+    return {
+      props: {
+        ...(await serverSideTranslations(locale || 'en', [
+          'common',
+          'navigation',
+          'footer',
+          'auth',
+        ])),
+      },
+    };
+  });

@@ -1,8 +1,9 @@
 import React from 'react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Main } from 'layouts/Main';
+import { wrapper } from 'store';
 import { Banner } from '@/Banner';
 
 export default function Home(): React.ReactElement {
@@ -19,15 +20,16 @@ export default function Home(): React.ReactElement {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale || 'en', [
-        'common',
-        'navigation',
-        'footer',
-        'filter',
-      ])),
-    },
-  };
-};
+export const getServerSideProps: GetServerSideProps =
+  wrapper.getServerSideProps(() => async ({ locale }) => {
+    return {
+      props: {
+        ...(await serverSideTranslations(locale || 'en', [
+          'common',
+          'navigation',
+          'footer',
+          'filter',
+        ])),
+      },
+    };
+  });

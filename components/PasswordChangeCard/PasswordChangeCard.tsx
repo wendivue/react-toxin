@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
 
 import { Button } from '@/Button';
 import { TextField } from '@/TextField';
@@ -8,15 +8,13 @@ import { FormErrors } from '@/FormError';
 import { LoadingPopup } from '@/LoadingPopup';
 import { SubmitPopup } from '@/SubmitPopup';
 import { useInput } from '@/libs/hooks/useInput/useInput';
-import { useStore } from '@/libs/hooks/useStore';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
+import { authUpdateUserPassword } from 'store/auth/authActions';
 
 import styles from './PasswordChangeCard.module.scss';
 
-const PasswordChangeCard = observer((): JSX.Element => {
+const PasswordChangeCard = (): JSX.Element => {
   const { t } = useTranslation('auth');
-  const {
-    authStore: { user, isUserLoading, userError, updateUserPassword },
-  } = useStore();
 
   const [isPasswordChanged, setPasswordChanged] = useState<null | boolean>(
     null,
@@ -25,6 +23,14 @@ const PasswordChangeCard = observer((): JSX.Element => {
   const oldPassword = useInput('', {});
   const newPassword = useInput('', { isEmpty: true, isPassword: true });
   const newPasswordCopy = useInput('', {});
+  const dispatch = useDispatch();
+  const store = useTypedSelector((state) => state.auth);
+  const isUserLoading = useTypedSelector((state) => {
+    return state.auth.isUserLoading;
+  });
+  const userError = useTypedSelector((state) => {
+    return state.auth.userError;
+  });
 
   const isNewPasswordCopyValid =
     newPasswordCopy.value.length > 0 &&
@@ -38,22 +44,23 @@ const PasswordChangeCard = observer((): JSX.Element => {
 
   useEffect(() => {
     const isChangePasswordSuccess =
-      user && !userError && isPasswordChanged !== null && isBtnPressed;
+      store.user && !userError && isPasswordChanged !== null && isBtnPressed;
     if (isChangePasswordSuccess) {
       setPasswordChanged(true);
     } else {
       setPasswordChanged(false);
     }
-  }, [user, userError, isPasswordChanged, isBtnPressed, setPasswordChanged]);
+  }, [store.user, userError, isPasswordChanged, isBtnPressed]);
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     setBtnPressed(true);
-
-    updateUserPassword({
-      oldPassword: oldPassword.value,
-      newPassword: newPassword.value,
-    });
+    dispatch(
+      authUpdateUserPassword({
+        oldPassword: oldPassword.value,
+        newPassword: newPassword.value,
+      }),
+    );
   };
 
   return (
@@ -137,6 +144,6 @@ const PasswordChangeCard = observer((): JSX.Element => {
       </form>
     </div>
   );
-});
+};
 
 export { PasswordChangeCard };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
 
 import { Firebase } from '@/libs/Firebase';
 import { Button } from '@/Button';
@@ -10,22 +10,26 @@ import { useInput } from '@/libs/hooks/useInput/useInput';
 import { TextField } from '@/TextField';
 import { RadioButtons } from '@/RadioButtons';
 import { SwitchToggle } from '@/SwitchToggle';
-import { useStore } from '@/libs/hooks/useStore';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
+import { authSignupRequest } from 'store/auth/authActions';
+import { AuthError } from 'store/auth/authTypes';
 
 import styles from './RegistrationCard.module.scss';
 import { dateToJSON } from '../../helpers/timestampJSONFormatter';
 
-const RegistrationCard = observer((): JSX.Element => {
+const RegistrationCard = (): JSX.Element => {
   const { t } = useTranslation(['auth', 'common']);
-  const router = useRouter();
-  const {
-    authStore: { user, isUserLoading, userError, signupRequest },
-  } = useStore();
 
-  if (user && !userError) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const store = useTypedSelector((state) => state.auth);
+  const isFetching = useTypedSelector((state) => state.auth.isUserLoading);
+  const authError: AuthError | null = useTypedSelector(
+    (state) => state.auth.userError,
+  );
+  if (store.user && !authError) {
     router.push('/');
   }
-
   const email = useInput('', { isEmail: true, isEmpty: true });
   const password = useInput('', { isPassword: true, isEmpty: true });
   const birthDate = useInput('', { isBirthDate: true, minLength: 10 });
@@ -44,29 +48,30 @@ const RegistrationCard = observer((): JSX.Element => {
   const [userGender, setUserGender] = useState<0 | 1>(0);
   const [isSubscribed, setSubscribed] = useState(false);
   const [existEmail, setExistEmail] = useState('');
-
   const isOneFieldsNotValid =
     !email.isInputValid ||
     !password.isInputValid ||
     !birthDate.isInputValid ||
     !name.isInputValid ||
     !surname.isInputValid;
-  const isSubmitDisabled = isOneFieldsNotValid || isUserLoading;
-  const isEmailExist = userError && email.value === existEmail;
+  const isSubmitDisabled = isOneFieldsNotValid || isFetching;
+  const isEmailExist = authError && email.value === existEmail;
 
   const handleFormSubmit = (evt: React.SyntheticEvent): void => {
     evt.preventDefault();
-    signupRequest({
-      email: email.value,
-      password: password.value,
-      userInfo: {
-        name: name.value,
-        surname: surname.value,
-        isSubscribed,
-        gender: userGender,
-        birthday: dateToJSON(Firebase.toTimestamp(new Date(birthDate.value))),
-      },
-    });
+    dispatch(
+      authSignupRequest({
+        email: email.value,
+        password: password.value,
+        userInfo: {
+          name: name.value,
+          surname: surname.value,
+          isSubscribed,
+          gender: userGender,
+          birthday: dateToJSON(Firebase.toTimestamp(new Date(birthDate.value))),
+        },
+      }),
+    );
     setExistEmail(email.value);
   };
 
@@ -225,11 +230,11 @@ const RegistrationCard = observer((): JSX.Element => {
           theme="bordered"
           size="m"
           text={t('common:login')}
-          url="/auth/signIn"
+          url="/auth/signin"
         />
       </div>
     </div>
   );
-});
+};
 
 export { RegistrationCard };

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 
-import { useStore } from '@/libs/hooks/useStore';
+import { roomFetch, roomGetReviews } from 'store/room/roomAction';
 import { RoomInfo } from '@/RoomInfo';
 import { RoomRulesCard } from '@/RoomRulesCard';
 import { Diagram } from '@/Diagram';
@@ -13,45 +13,46 @@ import { ReviewList } from '@/ReviewList';
 import { LoadingPopup } from '@/LoadingPopup';
 import { Keys } from '@/RoomInfo/types';
 import { WarningPopup } from '@/WarningPopup';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
 import { CommentCard } from '@/CoommentCard';
 import { ReviewItemProps } from '@/ReviewList/type';
 
 import styles from './RoomDetailsCard.module.scss';
 
-const RoomDetailsCard = observer((): JSX.Element => {
+const RoomDetailsCard = (): JSX.Element => {
   const { t } = useTranslation('roomInfo');
-
-  const {
-    roomStore,
-    authStore: { user },
-  } = useStore();
+  const user = useTypedSelector((state) => state.auth.user);
   const [isShowPopup, setShowPopup] = useState(false);
   const router = useRouter();
   const { roomId } = router.query;
+  const dispatch = useDispatch();
 
   const {
     room: roomInfo,
     roomError,
     reviews,
-    isLoadingRoomData: isRoomInfoLoading,
-    fetchRoom,
-    getReviews,
-  } = roomStore;
-  const { images, rules, features: featuresList, votes } = roomInfo || {};
+    isLoadedRoomData: isRoomInfoLoading,
+  } = useTypedSelector((state) => state.room);
+  const {
+    images,
+    rules,
+    features: featuresList,
+    votes,
+  } = useTypedSelector((state) => state.room.room) || {};
 
   const [reviewsElements, setReviewsElements] = useState<
     Array<ReviewItemProps>
-  >([]);
+  >(
+    Object.keys(reviews || []).map(
+      (key) => ({ ...reviews?.[key], id: key } as ReviewItemProps),
+    ),
+  );
 
-  const featuresArray = useRef<string[] | null>(null);
-  useEffect(() => {
-    if (featuresList) {
-      const confirmedParams = Object.entries(featuresList).filter(
-        (item) => item[1],
-      );
-      featuresArray.current = confirmedParams.map((item) => item[0]);
-    }
-  }, [featuresList]);
+  const featuresArray = useRef<string[]>(
+    Object.entries(featuresList || {})
+      .filter((feature) => feature[1])
+      .map((feature) => feature[0]),
+  );
 
   const onPopupClick = (): void => {
     setShowPopup((prev) => !prev);
@@ -60,10 +61,10 @@ const RoomDetailsCard = observer((): JSX.Element => {
 
   useEffect(() => {
     if (!roomInfo && roomId) {
-      fetchRoom(roomId as string);
-      getReviews({ roomId: roomId as string });
+      dispatch(roomFetch(roomId as string));
+      dispatch(roomGetReviews({ roomId: roomId as string }));
     }
-  }, [roomInfo, roomId, fetchRoom, getReviews]);
+  }, [dispatch, roomInfo, roomId]);
 
   useEffect(() => {
     if (reviews) {
@@ -164,6 +165,6 @@ const RoomDetailsCard = observer((): JSX.Element => {
       )}
     </div>
   );
-});
+};
 
 export { RoomDetailsCard };

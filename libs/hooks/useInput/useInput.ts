@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useValidation } from '@/libs/hooks/useValidation/useValidation';
+import { useValidation } from '../useValidation/useValidation';
 
 import { UseInputProps } from './types';
 

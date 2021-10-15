@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { observer } from 'mobx-react-lite';
 
 import { Button } from '@/Button';
 import { FormErrors } from '@/FormError';
@@ -9,32 +9,33 @@ import { SubmitPopup } from '@/SubmitPopup';
 import { LoadingPopup } from '@/LoadingPopup';
 import { TextField } from '@/TextField';
 import { useInput } from '@/libs/hooks/useInput/useInput';
-import { useStore } from '@/libs/hooks/useStore';
+import { useTypedSelector } from '@/libs/hooks/useTypedSelector';
+import { authDeleteUser } from 'store/auth/authActions';
 
 import styles from './DeleteUserCard.module.scss';
 
-const DeleteUserCard = observer((): JSX.Element => {
+const DeleteUserCard = (): JSX.Element => {
   const { t } = useTranslation('auth');
 
   const [isUserDeleted, setUserDeleted] = useState<null | boolean>(null);
   const [password, setPassword] = useState('');
   const email = useInput('', { isEmail: true, isEmpty: true });
-  const {
-    authStore: { user, isUserLoading, userError, deleteUser },
-  } = useStore();
-
+  const dispatch = useDispatch();
   const router = useRouter();
+  const store = useTypedSelector((state) => state.auth);
+  const isUserLoading = useTypedSelector((state) => state.auth.isUserLoading);
+  const userError = useTypedSelector((state) => state.auth.userError);
   const isSubmitDisabled =
     !email.isInputValid || isUserLoading || password.length === 0;
 
   useEffect(() => {
-    const isUserNull = !user && !userError && !isUserLoading;
+    const isUserNull = !store.user && !userError && !isUserLoading;
     if (isUserNull && isUserDeleted !== null) {
       setUserDeleted(true);
     } else {
       setUserDeleted(false);
     }
-  }, [userError, isUserLoading, user, isUserDeleted]);
+  }, [userError, isUserLoading, store.user, isUserDeleted]);
 
   if (isUserDeleted) {
     router.push('/');
@@ -42,7 +43,7 @@ const DeleteUserCard = observer((): JSX.Element => {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    deleteUser({ email: email.value, password });
+    dispatch(authDeleteUser({ email: email.value, password }));
   };
 
   const handlePasswordChange = (
@@ -107,6 +108,6 @@ const DeleteUserCard = observer((): JSX.Element => {
       </form>
     </div>
   );
-});
+};
 
 export { DeleteUserCard };
